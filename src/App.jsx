@@ -10,6 +10,8 @@ import DrinkTable from "./pages/Drink/DrinkTable";
 import DrinkForm from "./pages/Drink/DrinkForm";
 import CategoryTable from "./pages/Category/CategoryTable";
 import CategoryForm from "./pages/Category/CategoryForm";
+import ToppingTable from "./pages/Topping/ToppingTable";
+import ToppingForm from "./pages/Topping/ToppingForm";
 
 const App = () => {
   return (
@@ -43,6 +45,16 @@ const App = () => {
               <Route
                 path="/admin/edit-category/:id"
                 element={<CategoryForm />}
+              ></Route>
+
+              <Route path="/admin/toppings" element={<ToppingTable />}></Route>
+              <Route
+                path="/admin/toppings/add"
+                element={<ToppingForm />}
+              ></Route>
+              <Route
+                path="/admin/edit-topping/:id"
+                element={<ToppingForm />}
               ></Route>
             </Routes>
 
