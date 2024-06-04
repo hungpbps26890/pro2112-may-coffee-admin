@@ -6,6 +6,8 @@ import "react-toastify/dist/ReactToastify.css";
 import SideBar from "./components/SideBar/SideBar";
 import NavBar from "./components/NavBar/NavBar";
 import Footer from "./components/Footer/Footer";
+import DrinkTable from "./pages/Drink/DrinkTable";
+import DrinkForm from "./pages/Drink/DrinkForm";
 
 const App = () => {
   return (
@@ -19,12 +21,19 @@ const App = () => {
           <NavBar />
 
           {/* Content */}
-          <div className="templatemo-content-container"></div>
+          <div className="templatemo-content-container">
+            <Routes>
+              <Route path="/admin/drinks" element={<DrinkTable />}></Route>
+              <Route path="/admin/drinks/add" element={<DrinkForm />}></Route>
+              <Route
+                path="/admin/edit-drink/:id"
+                element={<DrinkForm />}
+              ></Route>
+            </Routes>
 
-          <Routes></Routes>
-
-          {/* Footer */}
-          <Footer />
+            {/* Footer */}
+            <Footer />
+          </div>
         </div>
       </div>
 
