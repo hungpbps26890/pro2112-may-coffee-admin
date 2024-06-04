@@ -8,6 +8,8 @@ import NavBar from "./components/NavBar/NavBar";
 import Footer from "./components/Footer/Footer";
 import DrinkTable from "./pages/Drink/DrinkTable";
 import DrinkForm from "./pages/Drink/DrinkForm";
+import CategoryTable from "./pages/Category/CategoryTable";
+import CategoryForm from "./pages/Category/CategoryForm";
 
 const App = () => {
   return (
@@ -28,6 +30,19 @@ const App = () => {
               <Route
                 path="/admin/edit-drink/:id"
                 element={<DrinkForm />}
+              ></Route>
+
+              <Route
+                path="/admin/categories"
+                element={<CategoryTable />}
+              ></Route>
+              <Route
+                path="/admin/categories/add"
+                element={<CategoryForm />}
+              ></Route>
+              <Route
+                path="/admin/edit-category/:id"
+                element={<CategoryForm />}
               ></Route>
             </Routes>
 

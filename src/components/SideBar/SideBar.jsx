@@ -37,16 +37,16 @@ const SideBar = () => {
             </NavLink>
           </li>
           <li>
-            <NavLink to={"/admin/toppings"} style={{ textDecoration: "none" }}>
-              <i className="fa fa-list fa-fw"></i>Manage Topping
-            </NavLink>
-          </li>
-          <li>
             <NavLink
               to={"/admin/categories"}
               style={{ textDecoration: "none" }}
             >
               <i className="fa fa-database fa-fw"></i>Manage Category
+            </NavLink>
+          </li>
+          <li>
+            <NavLink to={"/admin/toppings"} style={{ textDecoration: "none" }}>
+              <i className="fa fa-list fa-fw"></i>Manage Topping
             </NavLink>
           </li>
           <li>
