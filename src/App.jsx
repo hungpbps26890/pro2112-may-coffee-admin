@@ -12,6 +12,8 @@ import CategoryTable from "./pages/Category/CategoryTable";
 import CategoryForm from "./pages/Category/CategoryForm";
 import ToppingTable from "./pages/Topping/ToppingTable";
 import ToppingForm from "./pages/Topping/ToppingForm";
+import SizeTable from "./pages/Size/SizeTable";
+import SizeForm from "./pages/Size/SizeForm";
 
 const App = () => {
   return (
@@ -56,6 +58,10 @@ const App = () => {
                 path="/admin/edit-topping/:id"
                 element={<ToppingForm />}
               ></Route>
+
+              <Route path="/admin/sizes" element={<SizeTable />}></Route>
+              <Route path="/admin/sizes/add" element={<SizeForm />}></Route>
+              <Route path="/admin/edit-size/:id" element={<SizeForm />}></Route>
             </Routes>
 
             {/* Footer */}
