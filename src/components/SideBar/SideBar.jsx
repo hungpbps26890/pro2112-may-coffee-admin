@@ -60,6 +60,36 @@ const SideBar = () => {
             </a>
           </li>
           <li>
+            <NavLink to={"/admin/banks"} style={{ textDecoration: "none" }}>
+              <i className="fa fa-sliders fa-fw"></i>Manage Bank
+            </NavLink>
+          </li>
+          <li>
+            <NavLink to={"/admin/payment-methods"} style={{ textDecoration: "none" }}>
+              <i className="fa fa-sliders fa-fw"></i>Manage Payment Method
+            </NavLink>
+          </li>
+          <li>
+            <NavLink to={"/admin/payment-method-banks"} style={{ textDecoration: "none" }}>
+              <i className="fa fa-sliders fa-fw"></i>Manage Payment Method Bank
+            </NavLink>
+          </li>
+          <li>
+            <NavLink to={"/admin/voucher-types"} style={{ textDecoration: "none" }}>
+              <i className="fa fa-sliders fa-fw"></i>Manage Voucher Type
+            </NavLink>
+          </li>
+          <li>
+            <NavLink to={"/admin/vouchers"} style={{ textDecoration: "none" }}>
+              <i className="fa fa-sliders fa-fw"></i>Manage Voucher
+            </NavLink>
+          </li>
+          <li>
+            <NavLink to={"/admin/orders"} style={{ textDecoration: "none" }}>
+              <i className="fa fa-sliders fa-fw"></i>Manage Order
+            </NavLink>
+          </li>
+          <li>
             <a href="login.html">
               <i className="fa fa-eject fa-fw"></i>Sign Out
             </a>
