@@ -99,6 +99,7 @@ const VoucherTable = () => {
               vouchers.map((voucher, index) => (
                 <tr key={`voucher-${index}`}>
                   <th>{index + 1}</th>
+                  <td>{voucher.voucherType.name}</td>
                   <td>{voucher.discountCode}</td>
                   <td>{voucher.amount}</td>
                   <td>{voucher.beginDate}</td>

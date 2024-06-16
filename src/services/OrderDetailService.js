@@ -10,4 +10,4 @@ export const putUpdateOrderDetail = (id, data) =>
   axios.put(`/api/order-details/${id}`, data);
 
 export const deleteOrderDetailById = (id) =>
-  axios.delete(`/api/order-details/delete/${id}`);
+  axios.delete(`/api/order-details/${id}`);

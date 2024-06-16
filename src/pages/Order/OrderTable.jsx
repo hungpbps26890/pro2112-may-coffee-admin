@@ -1,10 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
-import {
-  fetchAllOrders,
-  deleteOrderById,
-} from "../../services/OrderService";
+import { fetchAllOrders, deleteOrderById } from "../../services/OrderService";
 
 const OrderTable = () => {
   const [orders, setOrders] = useState([]);
@@ -120,9 +117,7 @@ const OrderTable = () => {
                   <td>
                     <button
                       className="templatemo-edit-btn"
-                      onClick={() =>
-                        navigator(`/admin/edit-order/${order.id}`)
-                      }
+                      onClick={() => navigator(`/admin/edit-order/${order.id}`)}
                     >
                       Edit
                     </button>

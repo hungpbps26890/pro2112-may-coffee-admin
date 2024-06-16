@@ -27,7 +27,7 @@ const BankForm = () => {
 
   useEffect(() => {
     if (id) {
-      getCategoryById(id);
+      getBankById(id);
     }
   }, [id]);
 

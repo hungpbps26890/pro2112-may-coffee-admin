@@ -1,4 +1,4 @@
-import { Formik, Form } from "formik";
+import { Formik, Form, Field } from "formik";
 import React, { useEffect, useState } from "react";
 import * as Yup from "yup";
 import { useNavigate, useParams } from "react-router-dom";
@@ -11,6 +11,8 @@ import {
 } from "../../services/PaymentMethodBankService";
 import { fetchAllPaymentMethods } from "../../services/PaymentMethodService";
 import { fetchAllBanks } from "../../services/BankService";
+
+
 const PaymentMethodBankForm = () => {
   const [formValues, setFormValues] = useState(null);
   const [paymentMethods, setPaymentMethods] = useState(null);
@@ -129,11 +131,6 @@ const PaymentMethodBankForm = () => {
                   control="input"
                   label="Total Price"
                   name="totalPrice"
-                />
-                <FormikControl
-                  control="input"
-                  label="Date"
-                  name="date"
                 />
                 
                 

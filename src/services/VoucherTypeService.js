@@ -10,4 +10,4 @@ export const putUpdateVoucherType = (id, data) =>
   axios.put(`/api/voucher-types/${id}`, data);
 
 export const deleteVoucherTypeById = (id) =>
-  axios.delete(`/api/voucher-types/delete/${id}`);
+  axios.delete(`/api/voucher-types/${id}`);

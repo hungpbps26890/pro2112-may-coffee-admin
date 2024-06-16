@@ -10,4 +10,4 @@ export const putUpdateBank = (id, data) =>
   axios.put(`/api/banks/${id}`, data);
 
 export const deleteBankById = (id) =>
-  axios.delete(`/api/banks/delete/${id}`);
+  axios.delete(`/api/banks/${id}`);

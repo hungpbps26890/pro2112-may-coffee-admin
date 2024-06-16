@@ -1,4 +1,4 @@
-import { Formik, Form } from "formik";
+import { Formik, Form, Field } from "formik";
 import React, { useEffect, useState } from "react";
 import * as Yup from "yup";
 import { useNavigate, useParams } from "react-router-dom";
@@ -9,9 +9,12 @@ import {
   postCreateVoucher,
   putUpdateVoucher,
 } from "../../services/VoucherService";
+import { fetchAllCategories } from "../../services/CategoryService";
+import { fetchAllVoucherTypes } from "../../services/VoucherTypeService";
 
 const VoucherForm = () => {
   const [formValues, setFormValues] = useState(null);
+  const [voucherTypes, setVoucherTypes] = useState([]);
 
   const { id } = useParams();
 
@@ -21,7 +24,19 @@ const VoucherForm = () => {
     const res = await fetchGetVoucherById(id);
 
     if (res && res.result) {
-      setFormValues(res.result);
+      const voucher = res.result;
+      setFormValues({
+        ...voucher,
+        voucherTypeId: voucher.voucherType.id,
+      });
+    }
+  };
+
+  const getVoucherTypes = async () => {
+    const res = await fetchAllVoucherTypes();
+
+    if (res && res.result) {
+      setVoucherTypes(res.result);
     }
   };
 
@@ -30,6 +45,10 @@ const VoucherForm = () => {
       getVoucherById(id);
     }
   }, [id]);
+
+  useEffect(() => {
+    getVoucherTypes();
+  }, []);
 
   const initialValues = {
     name: "",
@@ -91,16 +110,31 @@ const VoucherForm = () => {
           >
             {(formik) => (
               <Form className="templatemo-login-form">
+                <div className={`form-group`}>
+                  <label htmlFor="voucherTypeId" className="control-label">
+                    Voucher Type
+                  </label>
+                  <Field
+                    as="select"
+                    id="voucherTypeId"
+                    name="voucherTypeId"
+                    className="form-control"
+                  >
+                    {voucherTypes.map((voucherType) => {
+                      return (
+                        <option key={voucherType.id} value={voucherType.id}>
+                          {voucherType.name}
+                        </option>
+                      );
+                    })}
+                  </Field>
+                </div>
                 <FormikControl
                   control="input"
                   label="Discount Code"
                   name="discountCode"
                 />
-                <FormikControl
-                  control="input"
-                  label="Amount"
-                  name="amount"
-                />
+                <FormikControl control="input" label="Amount" name="amount" />
                 <FormikControl
                   control="input"
                   label="Begin Date"
@@ -111,11 +145,7 @@ const VoucherForm = () => {
                   label="End Date"
                   name="endDate"
                 />
-                <FormikControl
-                  control="input"
-                  label="Image"
-                  name="image"
-                />
+                <FormikControl control="input" label="Image" name="image" />
 
                 <div className="form-group">
                   <button

@@ -1,5 +1,6 @@
 import React from "react";
 import Input from "./Input";
+import InputDate from "./InputDate";
 import Textarea from "./Textarea";
 import Select from "./Select";
 import RadioButtons from "./RadioButtons";
@@ -20,6 +21,7 @@ const FormikControl = (props) => {
     case "checkbox":
       return <CheckboxGroup {...rest} />;
     case "date":
+      return <InputDate {...rest} />;
     default:
       return null;
   }
