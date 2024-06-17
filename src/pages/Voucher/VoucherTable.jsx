@@ -5,6 +5,7 @@ import {
   fetchAllVouchers,
   deleteVoucherById,
 } from "../../services/VoucherService";
+import { format } from "date-fns";
 
 const VoucherTable = () => {
   const [vouchers, setVouchers] = useState([]);
@@ -102,8 +103,8 @@ const VoucherTable = () => {
                   <td>{voucher.voucherType.name}</td>
                   <td>{voucher.discountCode}</td>
                   <td>{voucher.amount}</td>
-                  <td>{voucher.beginDate}</td>
-                  <td>{voucher.endDate}</td>
+                  <td>{format(new Date(voucher.beginDate), "dd/MM/yyyy")}</td>
+                  <td>{format(new Date(voucher.endDate), "dd/MM/yyyy")}</td>
                   <td>{voucher.image}</td>
                   <td>
                     <button

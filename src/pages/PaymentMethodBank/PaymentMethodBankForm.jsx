@@ -12,11 +12,10 @@ import {
 import { fetchAllPaymentMethods } from "../../services/PaymentMethodService";
 import { fetchAllBanks } from "../../services/BankService";
 
-
 const PaymentMethodBankForm = () => {
   const [formValues, setFormValues] = useState(null);
-  const [paymentMethods, setPaymentMethods] = useState(null);
-  const [banks, setBanks] = useState(null);
+  const [paymentMethods, setPaymentMethods] = useState([]);
+  const [banks, setBanks] = useState([]);
 
   const { id } = useParams();
 
@@ -26,7 +25,12 @@ const PaymentMethodBankForm = () => {
     const res = await fetchGetPaymentMethodBankById(id);
 
     if (res && res.result) {
-      setFormValues(res.result);
+      const paymentMethodBank = res.result;
+      setFormValues({
+        ...paymentMethodBank,
+        paymentMethodId: paymentMethodBank.paymentMethod.id,
+        bankId: paymentMethodBank.bank.id,
+      });
     }
   };
 
@@ -34,17 +38,17 @@ const PaymentMethodBankForm = () => {
     const res = await fetchAllPaymentMethods();
 
     if (res && res.result) {
-      setPaymentMethods(res.result)
+      setPaymentMethods(res.result);
     }
-  }
+  };
 
   const getBanks = async () => {
     const res = await fetchAllBanks();
 
     if (res && res.result) {
-      setBanks(res.result)
+      setBanks(res.result);
     }
-  }
+  };
 
   useEffect(() => {
     if (id) {
@@ -58,7 +62,12 @@ const PaymentMethodBankForm = () => {
   }, []);
 
   const initialValues = {
-    name: "",
+    owner: "",
+    creditCard: "",
+    totalPrice: 0,
+    date: "",
+    paymentMethodId: 1,
+    bankId: "",
   };
 
   const onSubmit = (values, onSubmitProps) => {
@@ -76,7 +85,14 @@ const PaymentMethodBankForm = () => {
   };
 
   const validationSchema = Yup.object({
-    name: Yup.string().required("Required"),
+    owner: Yup.string().required("Required"),
+    creditCard: Yup.string().required("Required"),
+    totalPrice: Yup.number()
+      .required("Required")
+      .min(0, "Price must equal or greater than 0"),
+    date: Yup.string().required("Required"),
+    paymentMethodId: Yup.number().required("Required"),
+    bankId: Yup.number().required("Required"),
   });
 
   const handleSavePaymentMethodBank = async (data) => {
@@ -117,11 +133,7 @@ const PaymentMethodBankForm = () => {
           >
             {(formik) => (
               <Form className="templatemo-login-form">
-                <FormikControl
-                  control="input"
-                  label="Owner"
-                  name="owner"
-                />
+                <FormikControl control="input" label="Owner" name="owner" />
                 <FormikControl
                   control="input"
                   label="Credit Card"
@@ -132,10 +144,44 @@ const PaymentMethodBankForm = () => {
                   label="Total Price"
                   name="totalPrice"
                 />
-                
-                
-                 
-
+                <div className={`form-group`}>
+                  <label htmlFor="paymentMethodId" className="control-label">
+                    Payment Method
+                  </label>
+                  <Field
+                    as="select"
+                    id="paymentMethodId"
+                    name="paymentMethodId"
+                    className="form-control"
+                  >
+                    {paymentMethods.map((paymentMethod) => {
+                      return (
+                        <option key={paymentMethod.id} value={paymentMethod.id}>
+                          {paymentMethod.name}
+                        </option>
+                      );
+                    })}
+                  </Field>
+                </div>
+                <div className={`form-group`}>
+                  <label htmlFor="bankId" className="control-label">
+                    Bank
+                  </label>
+                  <Field
+                    as="select"
+                    id="bankId"
+                    name="bankId"
+                    className="form-control"
+                  >
+                    {banks.map((bank) => {
+                      return (
+                        <option key={bank.id} value={bank.id}>
+                          {bank.name}
+                        </option>
+                      );
+                    })}
+                  </Field>
+                </div>
                 <div className="form-group">
                   <button
                     type="submit"

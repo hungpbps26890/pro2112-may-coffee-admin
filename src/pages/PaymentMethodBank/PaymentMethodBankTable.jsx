@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { fetchAllPaymentMethodBanks } from "../../services/PaymentMethodBankService";
 import { format } from "date-fns";
+import { NumericFormat } from "react-number-format";
 
 const CategoryTable = () => {
   const [paymentMethodBanks, setPaymentMethodBanks] = useState([]);
@@ -11,8 +12,9 @@ const CategoryTable = () => {
     const res = await fetchAllPaymentMethodBanks();
 
     if (res && res.result) {
-      setPaymentMethodBanks(res.result);
       console.log(res.result);
+      const paymentMethodBank = res.result;
+      setPaymentMethodBanks(res.result);
     }
   };
 
@@ -99,12 +101,19 @@ const CategoryTable = () => {
                   <th>{index + 1}</th>
                   <td>{paymentMethodBank.owner}</td>
                   <td>{paymentMethodBank.creditCard}</td>
-                  <td>{paymentMethodBank.totalPrice}</td>
+                  <td>
+                    <NumericFormat
+                      displayType="text"
+                      value={paymentMethodBank.totalPrice}
+                      allowLeadingZeros
+                      thousandSeparator
+                    />
+                  </td>
                   <td>
                     {format(new Date(paymentMethodBank.date), "dd/MM/yyyy")}
                   </td>
-                  <td>{paymentMethodBank.paymentMethodId}</td>
-                  <td>{paymentMethodBank.bankId}</td>
+                  <td>{paymentMethodBank.paymentMethod.name}</td>
+                  <td>{paymentMethodBank.bank.name}</td>
                   <td>
                     <button
                       className="templatemo-edit-btn"
