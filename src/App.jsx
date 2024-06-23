@@ -26,6 +26,8 @@ import VoucherTable from "./pages/Voucher/VoucherTable";
 import VoucherForm from "./pages/Voucher/VoucherForm";
 import OrderTable from "./pages/Order/OrderTable";
 import OrderForm from "./pages/Order/OrderForm";
+import UserTable from "./pages/User/UserTable";
+import UserForm from "./pages/User/UserForm";
 
 const App = () => {
   return (
@@ -61,7 +63,10 @@ const App = () => {
                 element={<CategoryForm />}
               ></Route>
 
-              <Route path="/admin/toppings" element={<ToppingTable />}></Route>
+              <Route 
+                path="/admin/toppings" 
+                element={<ToppingTable />}
+              ></Route>
               <Route
                 path="/admin/toppings/add"
                 element={<ToppingForm />}
@@ -71,10 +76,23 @@ const App = () => {
                 element={<ToppingForm />}
               ></Route>
 
+              <Route 
+                path="/admin/users" 
+                element={<UserTable />}
+              ></Route>
+              <Route 
+                path="/admin/users/add" 
+                element={<UserForm/>}
+              ></Route>
+              <Route 
+                path="/admin/edit-user/:id" 
+                element={<UserForm/>}
+              ></Route>
+
               <Route path="/admin/sizes" element={<SizeTable />}></Route>
               <Route path="/admin/sizes/add" element={<SizeForm />}></Route>
               <Route path="/admin/edit-size/:id" element={<SizeForm />}></Route>
-
+    
               <Route path="/admin/banks" element={<BankTable />}></Route>
               <Route path="/admin/banks/add" element={<BankForm />}></Route>
               <Route path="/admin/edit-bank/:id" element={<BankForm />}></Route>

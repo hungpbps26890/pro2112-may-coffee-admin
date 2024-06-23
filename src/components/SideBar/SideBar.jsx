@@ -55,9 +55,9 @@ const SideBar = () => {
             </NavLink>
           </li>
           <li>
-            <a href="manage-users.html">
+            <NavLink to={"/admin/users"} style={{ textDecoration: "none" }}>
               <i className="fa fa-users fa-fw"></i>Manage Users
-            </a>
+            </NavLink>
           </li>
           <li>
             <NavLink to={"/admin/banks"} style={{ textDecoration: "none" }}>
@@ -65,17 +65,26 @@ const SideBar = () => {
             </NavLink>
           </li>
           <li>
-            <NavLink to={"/admin/payment-methods"} style={{ textDecoration: "none" }}>
+            <NavLink
+              to={"/admin/payment-methods"}
+              style={{ textDecoration: "none" }}
+            >
               <i className="fa fa-sliders fa-fw"></i>Manage Payment Method
             </NavLink>
           </li>
           <li>
-            <NavLink to={"/admin/payment-method-banks"} style={{ textDecoration: "none" }}>
+            <NavLink
+              to={"/admin/payment-method-banks"}
+              style={{ textDecoration: "none" }}
+            >
               <i className="fa fa-sliders fa-fw"></i>Manage Payment Method Bank
             </NavLink>
           </li>
           <li>
-            <NavLink to={"/admin/voucher-types"} style={{ textDecoration: "none" }}>
+            <NavLink
+              to={"/admin/voucher-types"}
+              style={{ textDecoration: "none" }}
+            >
               <i className="fa fa-sliders fa-fw"></i>Manage Voucher Type
             </NavLink>
           </li>
