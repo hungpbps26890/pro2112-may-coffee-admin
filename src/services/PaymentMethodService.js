@@ -10,4 +10,4 @@ export const putUpdatePaymentMethod = (id, data) =>
   axios.put(`/api/payment-methods/${id}`, data);
 
 export const deletePaymentMethodById = (id) =>
-  axios.delete(`/api/payment-methods/delete/${id}`);
+  axios.delete(`/api/payment-methods/${id}`);

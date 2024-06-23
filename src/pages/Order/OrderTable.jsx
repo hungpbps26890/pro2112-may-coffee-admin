@@ -1,10 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
-import {
-  fetchAllOrders,
-  deleteOrderById,
-} from "../../services/OrderService";
+import { fetchAllOrders, deleteOrderById } from "../../services/OrderService";
+import { NumericFormat } from "react-number-format";
+import { format } from "date-fns";
 
 const OrderTable = () => {
   const [orders, setOrders] = useState([]);
@@ -109,9 +108,16 @@ const OrderTable = () => {
               orders.map((order, index) => (
                 <tr key={`order-${index}`}>
                   <th>{index + 1}</th>
-                  <td>{order.totalPrice}</td>
+                  <td>
+                    <NumericFormat
+                      displayType="text"
+                      value={order.totalPrice}
+                      allowLeadingZeros
+                      thousandSeparator
+                    />
+                  </td>
                   <td>{order.userName}</td>
-                  <td>{order.createDate}</td>
+                  <td>{format(new Date(order.createDate), "dd/MM/yyyy")}</td>
                   <td>{order.paymentStatus}</td>
                   <td>{order.tableNumber}</td>
                   <td>{order.deliveryCharge}</td>
@@ -120,9 +126,7 @@ const OrderTable = () => {
                   <td>
                     <button
                       className="templatemo-edit-btn"
-                      onClick={() =>
-                        navigator(`/admin/edit-order/${order.id}`)
-                      }
+                      onClick={() => navigator(`/admin/edit-order/${order.id}`)}
                     >
                       Edit
                     </button>

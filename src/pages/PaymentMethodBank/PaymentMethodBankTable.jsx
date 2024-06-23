@@ -1,10 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
-import {
-  fetchAllPaymentMethodBanks,
-  deletePaymentMethodBankById,
-} from "../../services/PaymentMethodBankService";
+import { fetchAllPaymentMethodBanks } from "../../services/PaymentMethodBankService";
+import { format } from "date-fns";
+import { NumericFormat } from "react-number-format";
 
 const CategoryTable = () => {
   const [paymentMethodBanks, setPaymentMethodBanks] = useState([]);
@@ -13,8 +12,9 @@ const CategoryTable = () => {
     const res = await fetchAllPaymentMethodBanks();
 
     if (res && res.result) {
-      setPaymentMethodBanks(res.result);
       console.log(res.result);
+      const paymentMethodBank = res.result;
+      setPaymentMethodBanks(res.result);
     }
   };
 
@@ -62,32 +62,32 @@ const CategoryTable = () => {
               </td>
               <td>
                 <a href="" className="white-text templatemo-sort-by">
-                Owner <span className="caret"></span>
+                  Owner <span className="caret"></span>
                 </a>
               </td>
               <td>
                 <a href="" className="white-text templatemo-sort-by">
-                Credit Card <span className="caret"></span>
+                  Credit Card <span className="caret"></span>
                 </a>
               </td>
               <td>
                 <a href="" className="white-text templatemo-sort-by">
-                Total Price <span className="caret"></span>
+                  Total Price <span className="caret"></span>
                 </a>
               </td>
               <td>
                 <a href="" className="white-text templatemo-sort-by">
-                Date <span className="caret"></span>
+                  Date <span className="caret"></span>
                 </a>
               </td>
               <td>
                 <a href="" className="white-text templatemo-sort-by">
-                Payment Method <span className="caret"></span>
+                  Payment Method <span className="caret"></span>
                 </a>
               </td>
               <td>
                 <a href="" className="white-text templatemo-sort-by">
-                Bank <span className="caret"></span>
+                  Bank <span className="caret"></span>
                 </a>
               </td>
               <td>Actions</td>
@@ -101,24 +101,29 @@ const CategoryTable = () => {
                   <th>{index + 1}</th>
                   <td>{paymentMethodBank.owner}</td>
                   <td>{paymentMethodBank.creditCard}</td>
-                  <td>{paymentMethodBank.totalPrice}</td>
-                  <td>{paymentMethodBank.date}</td>
-                  <td>{paymentMethodBank.paymentMethodId}</td>
-                  <td>{paymentMethodBank.bankId}</td>
+                  <td>
+                    <NumericFormat
+                      displayType="text"
+                      value={paymentMethodBank.totalPrice}
+                      allowLeadingZeros
+                      thousandSeparator
+                    />
+                  </td>
+                  <td>
+                    {format(new Date(paymentMethodBank.date), "dd/MM/yyyy")}
+                  </td>
+                  <td>{paymentMethodBank.paymentMethod.name}</td>
+                  <td>{paymentMethodBank.bank.name}</td>
                   <td>
                     <button
                       className="templatemo-edit-btn"
                       onClick={() =>
-                        navigator(`/admin/edit-payment-method-bank/${paymentMethodBank.id}`)
+                        navigator(
+                          `/admin/edit-payment-method-bank/${paymentMethodBank.id}`
+                        )
                       }
                     >
-                      Edit
-                    </button>
-                    <button
-                      className="templatemo-delete-btn"
-                      onClick={() => deletePaymentMethodBank(paymentMethodBank.id)}
-                    >
-                      Delete
+                      Detail
                     </button>
                   </td>
                 </tr>
