@@ -114,7 +114,7 @@ const DrinkTable = () => {
                         ))}
                     </div>
                   </td>
-                  <td>
+                  <td style={{ minWidth: 180 }}>
                     <button
                       className="templatemo-edit-btn"
                       onClick={() => navigator(`/admin/edit-drink/${drink.id}`)}

@@ -25,6 +25,7 @@ import VoucherTypeForm from "./pages/VoucherType/VoucherTypeForm";
 import VoucherTable from "./pages/Voucher/VoucherTable";
 import VoucherForm from "./pages/Voucher/VoucherForm";
 import OrderTable from "./pages/Order/OrderTable";
+import OrderDetails from "./pages/Order/OrderDetails";
 import OrderForm from "./pages/Order/OrderForm";
 import UserTable from "./pages/User/UserTable";
 import UserForm from "./pages/User/UserForm";
@@ -63,10 +64,7 @@ const App = () => {
                 element={<CategoryForm />}
               ></Route>
 
-              <Route 
-                path="/admin/toppings" 
-                element={<ToppingTable />}
-              ></Route>
+              <Route path="/admin/toppings" element={<ToppingTable />}></Route>
               <Route
                 path="/admin/toppings/add"
                 element={<ToppingForm />}
@@ -76,47 +74,76 @@ const App = () => {
                 element={<ToppingForm />}
               ></Route>
 
-              <Route 
-                path="/admin/users" 
-                element={<UserTable />}
-              ></Route>
-              <Route 
-                path="/admin/users/add" 
-                element={<UserForm/>}
-              ></Route>
-              <Route 
-                path="/admin/edit-user/:id" 
-                element={<UserForm/>}
-              ></Route>
+              <Route path="/admin/users" element={<UserTable />}></Route>
+              <Route path="/admin/users/add" element={<UserForm />}></Route>
+              <Route path="/admin/edit-user/:id" element={<UserForm />}></Route>
 
               <Route path="/admin/sizes" element={<SizeTable />}></Route>
               <Route path="/admin/sizes/add" element={<SizeForm />}></Route>
               <Route path="/admin/edit-size/:id" element={<SizeForm />}></Route>
-    
+
               <Route path="/admin/banks" element={<BankTable />}></Route>
               <Route path="/admin/banks/add" element={<BankForm />}></Route>
               <Route path="/admin/edit-bank/:id" element={<BankForm />}></Route>
 
-              <Route path="/admin/payment-methods" element={<PaymentMethodTable />}></Route>
-              <Route path="/admin/payment-methods/add" element={<PaymentMethodForm />}></Route>
-              <Route path="/admin/edit-payment-method/:id" element={<PaymentMethodForm />}></Route>
+              <Route
+                path="/admin/payment-methods"
+                element={<PaymentMethodTable />}
+              ></Route>
+              <Route
+                path="/admin/payment-methods/add"
+                element={<PaymentMethodForm />}
+              ></Route>
+              <Route
+                path="/admin/edit-payment-method/:id"
+                element={<PaymentMethodForm />}
+              ></Route>
 
-              <Route path="/admin/payment-method-banks" element={<PaymentMethodBankTable />}></Route>
-              <Route path="/admin/payment-method-banks/add" element={<PaymentMethodBankForm />}></Route>
-              <Route path="/admin/edit-payment-method-bank/:id" element={<PaymentMethodBankForm />}></Route>
+              <Route
+                path="/admin/payment-method-banks"
+                element={<PaymentMethodBankTable />}
+              ></Route>
+              <Route
+                path="/admin/payment-method-banks/add"
+                element={<PaymentMethodBankForm />}
+              ></Route>
+              <Route
+                path="/admin/edit-payment-method-bank/:id"
+                element={<PaymentMethodBankForm />}
+              ></Route>
 
-              <Route path="/admin/voucher-types" element={<VoucherTypeTable />}></Route>
-              <Route path="/admin/voucher-types/add" element={<VoucherTypeForm />}></Route>
-              <Route path="/admin/edit-voucher-type/:id" element={<VoucherTypeForm />}></Route>
+              <Route
+                path="/admin/voucher-types"
+                element={<VoucherTypeTable />}
+              ></Route>
+              <Route
+                path="/admin/voucher-types/add"
+                element={<VoucherTypeForm />}
+              ></Route>
+              <Route
+                path="/admin/edit-voucher-type/:id"
+                element={<VoucherTypeForm />}
+              ></Route>
 
               <Route path="/admin/vouchers" element={<VoucherTable />}></Route>
-              <Route path="/admin/vouchers/add" element={<VoucherForm />}></Route>
-              <Route path="/admin/edit-voucher/:id" element={<VoucherForm />}></Route>
+              <Route
+                path="/admin/vouchers/add"
+                element={<VoucherForm />}
+              ></Route>
+              <Route
+                path="/admin/edit-voucher/:id"
+                element={<VoucherForm />}
+              ></Route>
 
               <Route path="/admin/orders" element={<OrderTable />}></Route>
-              <Route path="/admin/orders/add" element={<OrderForm />}></Route>
-              <Route path="/admin/edit-order/:id" element={<OrderForm />}></Route>
-
+              <Route
+                path="/admin/order-details/:id"
+                element={<OrderDetails />}
+              ></Route>
+              <Route
+                path="/admin/edit-order/:id"
+                element={<OrderForm />}
+              ></Route>
             </Routes>
 
             {/* Footer */}

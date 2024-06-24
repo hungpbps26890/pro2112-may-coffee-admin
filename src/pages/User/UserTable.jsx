@@ -1,40 +1,24 @@
-// react arrow function const export
-import React, { useEffect, useState } from 'react'
-import { useNavigate } from 'react-router-dom'
-import { 
-  deleteUserById, 
-  fetchGetAllUsers }
-   from '../../services/UserService'
-import { deleteToppingById } from '../../services/ToppingService';
-import { toast } from 'react-toastify';
+import React, { useEffect, useState } from "react";
+import { fetchGetAllUsers } from "../../services/UserService";
+import { useNavigate } from "react-router-dom";
 
 const UserTable = () => {
   const [users, setUsers] = useState([]);
 
-  const getAllUsers = async() => {
+  const navigator = useNavigate();
+
+  const getAllUsers = async () => {
     const res = await fetchGetAllUsers();
 
-    if(res && res.result){
+    if (res && res.result) {
       setUsers(res.result);
-      console.log(res.result);
     }
   };
 
   useEffect(() => {
     getAllUsers();
   }, []);
-  const navigator = useNavigate();
 
-  const deleteUser = async(id) => {
-    const res = await deleteUserById(id);
-
-    if(res && res.result){
-      toast.success(res.message);
-    }else{
-      toast.error("Error deleteing an user!")
-    }
-  };
-  
   return (
     <div className="templatemo-content-widget white-bg">
       <div
@@ -64,57 +48,71 @@ const UserTable = () => {
               </td>
               <td>
                 <a href="" className="white-text templatemo-sort-by">
-                  Username<span className="caret"></span>
+                  Email <span className="caret"></span>
                 </a>
               </td>
               <td>
                 <a href="" className="white-text templatemo-sort-by">
-                    Fullname <span className="caret"></span>
+                  First Name <span className="caret"></span>
                 </a>
               </td>
               <td>
                 <a href="" className="white-text templatemo-sort-by">
-                  Email<span className="caret"></span>
+                  Last Name <span className="caret"></span>
                 </a>
               </td>
               <td>
                 <a href="" className="white-text templatemo-sort-by">
-                  Phone Number<span className="caret"></span>
+                  Phone Number <span className="caret"></span>
                 </a>
               </td>
-              <td>Role</td>
+              <td>
+                <a href="" className="white-text templatemo-sort-by">
+                  Active <span className="caret"></span>
+                </a>
+              </td>
+              <td>
+                <a href="" className="white-text templatemo-sort-by">
+                  Role <span className="caret"></span>
+                </a>
+              </td>
               <td>Actions</td>
             </tr>
           </thead>
           <tbody>
-            {users && 
-            users.length > 0 &&
-            users.map((user, index) => (
-                <tr key = {`user - ${index}`}>
+            {users &&
+              users.length > 0 &&
+              users.map((user, index) => (
+                <tr key={`user-${index}`}>
                   <th>{index + 1}</th>
-                  <td>{user.username}</td>
-                  <td>{user.lastName} {user.firstName}</td>
                   <td>{user.email}</td>
+                  <td>{user.firstName}</td>
+                  <td>{user.lastName}</td>
                   <td>{user.phoneNumber}</td>
-                  <td>{user.roles.map(role => (<span key={role.name}>{role.name}</span>))}</td>
-                  {/* <td>{user.isActive ? "Active" : "Inactive"}</td> */}
+                  <td>{user.isActive ? "Active" : "Inactive"}</td>
                   <td>
-                    <button className='templatemo-edit-btn'
-                      onClick={() => 
-                        navigator(`/admin/edit-user/${user.id}`)
-                      }
+                    {user.roles.map((role) => (
+                      <span className="me-2" key={`role-${role.name}`}>
+                        {role.name}
+                      </span>
+                    ))}
+                  </td>
+                  <td style={{ minWidth: 180 }}>
+                    <button
+                      className="templatemo-edit-btn"
+                      onClick={() => navigator(`/admin/edit-user/${user.id}`)}
                     >
                       Edit
                     </button>
-                    <button 
-                      className='templatemo-delete-btn'
+                    <button
+                      className="templatemo-delete-btn"
                       onClick={() => deleteUser(user.id)}
                     >
-                      Del
+                      Delete
                     </button>
                   </td>
                 </tr>
-                ))}
+              ))}
           </tbody>
         </table>
       </div>
@@ -122,4 +120,4 @@ const UserTable = () => {
   );
 };
 
-export default UserTable
+export default UserTable;

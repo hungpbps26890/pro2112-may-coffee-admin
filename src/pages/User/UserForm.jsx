@@ -1,157 +1,156 @@
-import React, { useEffect, useState } from 'react';
-import FormikControl from '../../components/FormControl/FormikControl';
-import { useNavigate, useParams } from 'react-router-dom';
-import { toast } from 'react-toastify';
-import { Formik, Form } from 'formik';
-import * as Yup from "yup";
-import { 
-  fetchGetUserById, 
-  postCreateUser, 
-  putUpdateUser } 
-  from '../../services/UserService';
+import React, { useEffect, useState } from "react";
+import { useNavigate, useParams } from "react-router-dom";
+import { Formik, Form } from "formik";
+import { format as dateFormat } from "date-fns";
+import { fetchGetUserById, putUpdateUser } from "../../services/UserService";
+import FormikControl from "../../components/FormControl/FormikControl";
+import { toast } from "react-toastify";
 
 const UserForm = () => {
-  const [formValues, setFormValues] = useState(null);
+  const [formValues, setFormValues] = useState();
 
-  const {id} = useParams();
+  const { id } = useParams();
 
   const navigator = useNavigate();
 
-  useEffect(() => {
-    if(id) {
-      getUserById(id);
-    }
-  }, [id]);
-
-  const getUserById = async(id) => {
+  const getUserById = async (id) => {
     const res = await fetchGetUserById(id);
 
-    if( res && res.result){
+    if (res && res.result) {
       const user = res.result;
-      console.log(user);
-      setFormValues({...user, isActive: user.isActive.toString()});
+      setFormValues({
+        ...user,
+        isActive: user.isActive.toString(),
+        roles: user.roles[0].name,
+        dob: dateFormat(user.dob, "dd/MM/yyyy"),
+      });
+    }
   };
-};
+
+  useEffect(() => {
+    if (id) getUserById(id);
+  }, [id]);
+
+  const radioOptions = [
+    { key: "Active", value: "true" },
+    { key: "Inactive", value: "false" },
+  ];
 
   const initialValues = {
     email: "",
     firstName: "",
     lastName: "",
-    password: "",
-    phoneNumber:"",
-    // password: "",
-    isActive: "true"
+    phoneNumber: "",
+    isActive: "true",
+    authType: "",
+    dob: "",
+    roles: "",
   };
 
-  const onSubmit = (values, onSubmitProps) => {
-    console.log("Form data:", values);
+  const onSubmit = (values) => {
+    console.log("Form values: ", values);
+    const data = { isActive: values.isActive };
 
-    if(id){
-      handleUpdateUser(id, values);
-    }else{
-      handleSaveUser(values);
+    if (id) {
+      handleUpdateUser(id, data);
     }
 
     navigator("/admin/users");
-
-    onSubmitProps.resetForm();
   };
 
-  const regexPhoneNumber = /^(84|0[3|5|7|8|9])+([0-9]{8})/;
+  const handleUpdateUser = async (id, data) => {
+    const res = await putUpdateUser(id, data);
 
-  const validationSchema = Yup.object({
-    username: Yup.string().required("Required"),
-    firstName: Yup.string().required("Required"),
-    lastName: Yup.string().required("Required"),
-    email: Yup.string().required("Required"),
-    phoneNumber: Yup.string()
-                    .matches(regexPhoneNumber, "Phone number is not valid!")
-                    .required("Required"),
-    // password: Yup.string().required("Required"),
-    // confirmedPassword: Yup.string()
-    //                       .required("Required")
-    //                       .oneOf([Yup.ref("password")],"Password must be match")
-  });
-
-  const radioOptions = [
-    {key: "Active", value:"true"},
-    {key: "Inactive", value: "false"},
-  ];
-
-  const handleSaveUser = async(data) => {
-    const res = await postCreateUser(data);
-
-    if(res && res.result){
+    if (res && res.result) {
       console.log(res.result);
-      toast.success("Add a new user successfull!");
-    }else{
-      toast.error("Error adding a new user!");
+      toast.success(res.message);
+    } else {
+      toast.error("Error updating user!");
     }
   };
 
-  const handleUpdateUser = async(id, data) => {
-    const res = await putUpdateUser(id, data);
-
-  if(res && res.result){
-    console.log(res.result);
-    toast.success("Update user successfull!");
-  }else{
-    toast.error("Error updating an user!")
-  };
-};
   return (
-        <div className="templatemo-content-widget no-padding">
+    <div className="templatemo-content-widget no-padding">
       <div className="panel panel-default">
         <div className="panel-heading">
           <h2 className="text-uppercase">User Form</h2>
         </div>
         <div className="panel-body">
-            <Formik 
-              initialValues={formValues || initialValues}
-              validationSchema={validationSchema}
-              onSubmit={onSubmit}
-              validateOnChange={false}
-              enableReinitialize
-              >
-              {(formik) => ( 
-                 <Form className="templatemo-login-form">
+          <Formik
+            initialValues={formValues || initialValues}
+            onSubmit={onSubmit}
+            validateOnChange={false}
+            enableReinitialize
+          >
+            {(formik) => (
+              <Form className="templatemo-login-form">
+                <div className="row form-group">
+                  <div className="col-md-6">
                     <FormikControl
-                        control="input"
-                        label="Username"
-                        name="username"/>
-                    
+                      control="input"
+                      label="Email"
+                      name="email"
+                      readOnly
+                    />
+                  </div>
+                  <div className="col-md-6">
                     <FormikControl
-                        control="input"
-                        label="Email"
-                        name="email"/>
-                    
+                      control="input"
+                      label="Phone Number"
+                      name="phoneNumber"
+                      readOnly
+                    />
+                  </div>
+                </div>
+
+                <div className="row form-group">
+                  <div className="col-md-6">
                     <FormikControl
-                        control="input"
-                        label="First name"
-                        name="firstName"/>
-                    
+                      control="input"
+                      label="First Name"
+                      name="firstName"
+                      readOnly
+                    />
+                  </div>
+                  <div className="col-md-6">
                     <FormikControl
-                        control="input"
-                        label="Last name"
-                        name="lastName"/>
-                    
-                    <FormikControl
-                        control="input"
-                        label="Phone number"
-                        name="phoneNumber"/>
-                    
-                    {/* <FormikControl
-                        control="input"
-                        label="Password"
-                        name="password"/>
-                       */}
-                    <FormikControl
-                        control="radio"
-                        label="Active"
-                        name="isActive"
-                        options={radioOptions}
-                      />
-                        <div className="form-group">
+                      control="input"
+                      label="Last Name"
+                      name="lastName"
+                      readOnly
+                    />
+                  </div>
+                </div>
+
+                <FormikControl
+                  control="input"
+                  label="Auth Type"
+                  name="authType"
+                  readOnly
+                />
+
+                <FormikControl
+                  control="input"
+                  label="Birthday"
+                  name="dob"
+                  readOnly
+                />
+
+                <FormikControl
+                  control="input"
+                  label="Role"
+                  name="roles"
+                  readOnly
+                />
+
+                <FormikControl
+                  control="radio"
+                  label="Active"
+                  name="isActive"
+                  options={radioOptions}
+                />
+
+                <div className="form-group">
                   <button
                     type="submit"
                     className="templatemo-blue-button margin-right-15"
@@ -165,9 +164,9 @@ const UserForm = () => {
                     Reset
                   </button>
                 </div>
-                </Form>
-                )}
-                </Formik>
+              </Form>
+            )}
+          </Formik>
         </div>
       </div>
     </div>
