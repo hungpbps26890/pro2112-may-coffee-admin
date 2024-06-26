@@ -39,15 +39,15 @@ const UserForm = () => {
     lastName: "",
     password: "",
     phoneNumber:"",
-    // password: "",
     isActive: "true"
   };
 
   const onSubmit = (values, onSubmitProps) => {
     console.log("Form data:", values);
+    const data = {isActive: values.isActive};
 
     if(id){
-      handleUpdateUser(id, values);
+      handleUpdateUser(id, data);
     }else{
       handleSaveUser(values);
     }
@@ -66,11 +66,7 @@ const UserForm = () => {
     email: Yup.string().required("Required"),
     phoneNumber: Yup.string()
                     .matches(regexPhoneNumber, "Phone number is not valid!")
-                    .required("Required"),
-    // password: Yup.string().required("Required"),
-    // confirmedPassword: Yup.string()
-    //                       .required("Required")
-    //                       .oneOf([Yup.ref("password")],"Password must be match")
+                    .required("Required")
   });
 
   const radioOptions = [
@@ -118,33 +114,38 @@ const UserForm = () => {
                     <FormikControl
                         control="input"
                         label="Username"
-                        name="username"/>
+                        name="username"
+                        readOnly
+                    />
                     
                     <FormikControl
                         control="input"
                         label="Email"
-                        name="email"/>
+                        name="email"
+                        readOnly
+                    />
                     
                     <FormikControl
                         control="input"
                         label="First name"
-                        name="firstName"/>
+                        name="firstName"
+                        readOnly
+                    />
                     
                     <FormikControl
                         control="input"
                         label="Last name"
-                        name="lastName"/>
+                        name="lastName"
+                        readOnly
+                    />
                     
                     <FormikControl
                         control="input"
                         label="Phone number"
-                        name="phoneNumber"/>
-                    
-                    {/* <FormikControl
-                        control="input"
-                        label="Password"
-                        name="password"/>
-                       */}
+                        name="phoneNumber"
+                        readOnly
+                    />
+
                     <FormikControl
                         control="radio"
                         label="Active"
