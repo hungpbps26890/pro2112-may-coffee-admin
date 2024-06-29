@@ -32,7 +32,10 @@ const SideBar = () => {
             </a>
           </li>
           <li>
-            <NavLink to={"/admin/orders"} style={{ textDecoration: "none" }}>
+            <NavLink
+              to={"/admin/table/orders"}
+              style={{ textDecoration: "none" }}
+            >
               <i className="fa fa-table"></i>Manage Order
             </NavLink>
           </li>
