@@ -32,6 +32,11 @@ const SideBar = () => {
             </a>
           </li>
           <li>
+            <NavLink to={"/admin/orders"} style={{ textDecoration: "none" }}>
+              <i className="fa fa-table"></i>Manage Order
+            </NavLink>
+          </li>
+          <li>
             <NavLink to={"/admin/drinks"} style={{ textDecoration: "none" }}>
               <i className="fa fa-coffee fa-fw"></i>Manage Drink
             </NavLink>
@@ -91,11 +96,6 @@ const SideBar = () => {
           <li>
             <NavLink to={"/admin/vouchers"} style={{ textDecoration: "none" }}>
               <i className="fa fa-sliders fa-fw"></i>Manage Voucher
-            </NavLink>
-          </li>
-          <li>
-            <NavLink to={"/admin/orders"} style={{ textDecoration: "none" }}>
-              <i className="fa fa-sliders fa-fw"></i>Manage Order
             </NavLink>
           </li>
           <li>

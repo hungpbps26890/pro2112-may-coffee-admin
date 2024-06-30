@@ -144,7 +144,7 @@ const DrinkForm = () => {
 
     if (res && res.result) {
       console.log(res.result);
-      toast.success("Add a new drink successfull!");
+      toast.success("Add a new drink successfully!");
     } else {
       toast.error("Error adding a new drink!");
     }
@@ -155,7 +155,7 @@ const DrinkForm = () => {
 
     if (res && res.result) {
       console.log(res.result);
-      toast.success("Update drink successfull!");
+      toast.success("Update drink successfully!");
     } else {
       toast.error("Error updating a drink!");
     }
