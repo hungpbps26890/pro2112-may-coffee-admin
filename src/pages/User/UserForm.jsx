@@ -22,7 +22,7 @@ const UserForm = () => {
         ...user,
         isActive: user.isActive.toString(),
         roles: user.roles[0].name,
-        dob: dateFormat(user.dob, "dd/MM/yyyy"),
+        dob: dateFormat( new Date(user.dob), "dd/MM/yyyy"),
       });
     }
   };
