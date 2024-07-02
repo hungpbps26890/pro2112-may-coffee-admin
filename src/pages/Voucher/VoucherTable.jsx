@@ -5,23 +5,31 @@ import {
   fetchAllVouchers,
   deleteVoucherById,
 } from "../../services/VoucherService";
+import { fetchGetVoucherTypeById } from "../../services/VoucherTypeService";
 import { format } from "date-fns";
 
 const VoucherTable = () => {
   const [vouchers, setVouchers] = useState([]);
 
+  useEffect(() => {
+    getAllVouchers();
+  }, []);
+
   const getAllVouchers = async () => {
     const res = await fetchAllVouchers();
-
     if (res && res.result) {
       setVouchers(res.result);
       console.log(res.result);
     }
   };
 
-  useEffect(() => {
-    getAllVouchers();
-  }, []);
+  const handleVoucherTypeName = async (id) => {
+    const res = await fetchGetVoucherTypeById(id);
+    if (res && res.result) {
+      const name = res.result.name;
+      return name;
+    }
+  };
 
   const navigator = useNavigate();
 
@@ -100,7 +108,7 @@ const VoucherTable = () => {
               vouchers.map((voucher, index) => (
                 <tr key={`voucher-${index}`}>
                   <th>{index + 1}</th>
-                  <td>{voucher.voucherType.name}</td>
+                  <th></th>
                   <td>{voucher.discountCode}</td>
                   <td>{voucher.amount}</td>
                   <td>{format(new Date(voucher.beginDate), "dd/MM/yyyy")}</td>

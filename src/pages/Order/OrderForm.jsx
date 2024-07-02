@@ -107,7 +107,7 @@ const OrderForm = () => {
 
     handleUpdateOrderStatus(data);
 
-    navigator("/admin/orders");
+    navigator("/admin/table/orders");
   };
 
   return (

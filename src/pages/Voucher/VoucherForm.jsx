@@ -11,6 +11,9 @@ import {
 } from "../../services/VoucherService";
 import { fetchAllCategories } from "../../services/CategoryService";
 import { fetchAllVoucherTypes } from "../../services/VoucherTypeService";
+import { format } from "date-fns";
+import { NumericFormat } from "react-number-format";
+import { uploadImageToCloudinary } from "../../services/upload-cloudinary";
 
 const VoucherForm = () => {
   const [formValues, setFormValues] = useState(null);
@@ -28,6 +31,8 @@ const VoucherForm = () => {
       setFormValues({
         ...voucher,
         voucherTypeId: voucher.voucherType.id,
+        beginDate: format(new Date(voucher.beginDate), "MM/dd/yyyy"),
+        endDate: format(new Date(voucher.endDate), "MM/dd/yyyy"),
       });
     }
   };
@@ -51,7 +56,12 @@ const VoucherForm = () => {
   }, []);
 
   const initialValues = {
-    name: "",
+    discountCode: "",
+    amount: 0,
+    beginDate: "",
+    endDate: "",
+    image: "",
+    voucherTypeId: 1,
   };
 
   const onSubmit = (values, onSubmitProps) => {
@@ -69,7 +79,15 @@ const VoucherForm = () => {
   };
 
   const validationSchema = Yup.object({
-    name: Yup.string().required("Required"),
+    discountCode: Yup.string().required("Required"),
+    amount: Yup.number()
+      .typeError("amount must be a number")
+      .required("Required")
+      .min(0, "Amount must equal or greater than 0"),
+    beginDate: Yup.string().required("Required"),
+    endDate: Yup.string().required("Required"),
+    image: Yup.string().required("Required"),
+    voucherTypeId: Yup.number().required("Required"),
   });
 
   const handleSaveVoucher = async (data) => {
@@ -92,6 +110,13 @@ const VoucherForm = () => {
     } else {
       toast.error("Error updating a voucher!");
     }
+  };
+
+  const handleImageChange = async (e, formik) => {
+    const { target } = e;
+    const { files } = target;
+    const image = await uploadImageToCloudinary(files[0]);
+    formik.setFieldValue("image", image);
   };
 
   return (
@@ -135,18 +160,43 @@ const VoucherForm = () => {
                   name="discountCode"
                 />
                 <FormikControl control="input" label="Amount" name="amount" />
-                <FormikControl
-                  control="input"
-                  label="Begin Date"
-                  name="beginDate"
-                />
-                <FormikControl
-                  control="input"
-                  label="End Date"
-                  name="endDate"
-                />
-                <FormikControl control="input" label="Image" name="image" />
-
+                <div className="row form-group">
+                  <div className="col-md-2">
+                    <FormikControl
+                      control="date"
+                      label="Begin Date"
+                      name="beginDate"
+                    />
+                  </div>
+                  <div className="col-md-2">
+                    <FormikControl
+                      control="date"
+                      label="End Date"
+                      name="endDate"
+                    />
+                  </div>
+                  <div className="col-md-8">
+                    <label htmlFor="image" className="control-label">
+                      Image
+                    </label>
+                    <input
+                      type="file"
+                      id="image"
+                      className="form-control"
+                      accept="image/*"
+                      onChange={(e) => handleImageChange(e, formik)}
+                    />
+                  </div>
+                </div>
+                <div className="row form-group">
+                  <div className="col-md-12">
+                    <img
+                      src={formik.values.image}
+                      className="img-thumbnail"
+                      alt={formik.values.image}
+                    />
+                  </div>
+                </div>
                 <div className="form-group">
                   <button
                     type="submit"
