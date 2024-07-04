@@ -107,13 +107,19 @@ const VoucherTable = () => {
               vouchers.length > 0 &&
               vouchers.map((voucher, index) => (
                 <tr key={`voucher-${index}`}>
-                  <th>{index + 1}</th>
-                  <th></th>
+                  <td>{index + 1}</td>
+                  <td>{voucher.voucherType.name}</td>
                   <td>{voucher.discountCode}</td>
                   <td>{voucher.amount}</td>
-                  <td>{format(new Date(voucher.beginDate), "dd/MM/yyyy")}</td>
-                  <td>{format(new Date(voucher.endDate), "dd/MM/yyyy")}</td>
-                  <td>{voucher.image}</td>
+                  <td>{format(new Date(voucher.beginDate), "Pp")}</td>
+                  <td>{format(new Date(voucher.endDate), "Pp")}</td>
+                  <td>
+                    <img
+                      src={voucher.image}
+                      alt="Voucher image preview"
+                      style={{ width: 150, margin: 5 }}
+                    />
+                  </td>
                   <td>
                     <button
                       className="templatemo-edit-btn"

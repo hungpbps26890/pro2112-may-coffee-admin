@@ -28,6 +28,7 @@ const DatePicker = (props) => {
                 selected={value}
                 onChange={(val) => setFieldValue(name, val)}
                 dateFormat="Pp"
+                showTimeSelect
               />
             </>
           );

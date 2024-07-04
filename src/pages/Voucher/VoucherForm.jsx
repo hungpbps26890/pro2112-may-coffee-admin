@@ -14,6 +14,7 @@ import { fetchAllVoucherTypes } from "../../services/VoucherTypeService";
 import { format } from "date-fns";
 import { NumericFormat } from "react-number-format";
 import { uploadImageToCloudinary } from "../../services/upload-cloudinary";
+import { DatePicker } from "antd";
 
 const VoucherForm = () => {
   const [formValues, setFormValues] = useState(null);
@@ -31,8 +32,8 @@ const VoucherForm = () => {
       setFormValues({
         ...voucher,
         voucherTypeId: voucher.voucherType.id,
-        beginDate: format(new Date(voucher.beginDate), "MM/dd/yyyy"),
-        endDate: format(new Date(voucher.endDate), "MM/dd/yyyy"),
+        beginDate: new Date(voucher.beginDate),
+        endDate: new Date(voucher.endDate),
       });
     }
   };
@@ -66,9 +67,9 @@ const VoucherForm = () => {
 
   const onSubmit = (values, onSubmitProps) => {
     console.log("Form data: ", values);
-
     if (id) {
-      handleUpdateVoucher(id, values);
+      const data = { voucherTypeId: values.voucherType.id, ...values };
+      handleUpdateVoucher(id, data);
     } else {
       handleSaveVoucher(values);
     }
@@ -103,7 +104,6 @@ const VoucherForm = () => {
 
   const handleUpdateVoucher = async (id, data) => {
     const res = await putUpdateVoucher(id, data);
-
     if (res && res.result) {
       console.log(res.result);
       toast.success("Update voucher successfull!");
