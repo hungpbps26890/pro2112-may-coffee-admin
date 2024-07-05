@@ -1,5 +1,5 @@
-import { Formik, Form, Field } from "formik";
-import React, { useEffect, useState } from "react";
+import { Formik, Form, Field, setIn } from "formik";
+import React, { useEffect, useState, useMemo } from "react";
 import * as Yup from "yup";
 import { useNavigate, useParams } from "react-router-dom";
 import FormikControl from "../../components/FormControl/FormikControl";
@@ -9,20 +9,35 @@ import {
   postCreateVoucher,
   putUpdateVoucher,
 } from "../../services/VoucherService";
-import { fetchAllCategories } from "../../services/CategoryService";
 import { fetchAllVoucherTypes } from "../../services/VoucherTypeService";
-import { format } from "date-fns";
-import { NumericFormat } from "react-number-format";
 import { uploadImageToCloudinary } from "../../services/upload-cloudinary";
-import { DatePicker } from "antd";
 
 const VoucherForm = () => {
+  const { id } = useParams();
+  const navigator = useNavigate();
   const [formValues, setFormValues] = useState(null);
   const [voucherTypes, setVoucherTypes] = useState([]);
 
-  const { id } = useParams();
+  const [initialValues, setInitialValues] = useState({
+    discountCode: "",
+    amount: 0,
+    beginDate: "",
+    endDate: "",
+    image: "",
+    voucherTypeId: 1,
+  });
 
-  const navigator = useNavigate();
+  const validationSchema = Yup.object({
+    discountCode: Yup.string().required("Required"),
+    amount: Yup.number()
+      .typeError("amount must be a number")
+      .required("Required")
+      .min(0, "Amount must equal or greater than 0"),
+    beginDate: Yup.date().nullable(),
+    endDate: Yup.date().nullable(),
+    image: Yup.string().required("Required"),
+    voucherTypeId: Yup.number().required("Required"),
+  });
 
   const getVoucherById = async (id) => {
     const res = await fetchGetVoucherById(id);
@@ -43,6 +58,7 @@ const VoucherForm = () => {
 
     if (res && res.result) {
       setVoucherTypes(res.result);
+      setInitialValues({ ...initialValues, voucherTypeId: res.result[0].id });
     }
   };
 
@@ -55,15 +71,6 @@ const VoucherForm = () => {
   useEffect(() => {
     getVoucherTypes();
   }, []);
-
-  const initialValues = {
-    discountCode: "",
-    amount: 0,
-    beginDate: "",
-    endDate: "",
-    image: "",
-    voucherTypeId: 1,
-  };
 
   const onSubmit = (values, onSubmitProps) => {
     console.log("Form data: ", values);
@@ -78,18 +85,6 @@ const VoucherForm = () => {
 
     onSubmitProps.resetForm();
   };
-
-  const validationSchema = Yup.object({
-    discountCode: Yup.string().required("Required"),
-    amount: Yup.number()
-      .typeError("amount must be a number")
-      .required("Required")
-      .min(0, "Amount must equal or greater than 0"),
-    beginDate: Yup.string().required("Required"),
-    endDate: Yup.string().required("Required"),
-    image: Yup.string().required("Required"),
-    voucherTypeId: Yup.number().required("Required"),
-  });
 
   const handleSaveVoucher = async (data) => {
     const res = await postCreateVoucher(data);
