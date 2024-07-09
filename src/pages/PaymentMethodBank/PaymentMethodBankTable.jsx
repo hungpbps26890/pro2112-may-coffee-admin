@@ -54,7 +54,7 @@ const PaymentMethodBankTable = () => {
     },
     {
       title: "Total Price",
-      dataIndex: "totalPrice",
+      dataIndex: "paymentMethodBank",
       key: "totalPrice",
       defaultSortOrder: "descend",
       sorter: (a, b) => a.totalPrice - b.totalPrice,

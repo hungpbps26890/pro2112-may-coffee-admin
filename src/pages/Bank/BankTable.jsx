@@ -22,7 +22,6 @@ const BankTable = () => {
 
   useEffect(() => {
     getAllBanks();
-    console.log(banks);
   }, []);
 
   const navigator = useNavigate();
