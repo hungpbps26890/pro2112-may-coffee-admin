@@ -138,6 +138,7 @@ const PaymentMethodBankForm = () => {
                   control="input"
                   label="Credit Card"
                   name="creditCard"
+                  disab
                 />
                 <FormikControl
                   control="input"
@@ -184,16 +185,10 @@ const PaymentMethodBankForm = () => {
                 </div>
                 <div className="form-group">
                   <button
-                    type="submit"
-                    className="templatemo-blue-button margin-right-15"
-                  >
-                    Save
-                  </button>
-                  <button
-                    type="reset"
                     className="templatemo-white-button margin-right-15"
+                    onClick={() => navigator(`/admin/payment-method-banks`)}
                   >
-                    Reset
+                    Back
                   </button>
                 </div>
               </Form>

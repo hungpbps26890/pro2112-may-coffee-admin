@@ -39,6 +39,7 @@ const OrderTableAnt = () => {
     }
 
     if (res && res.result) {
+      console.log("test" + res.result.items);
       const data = res.result.items.map((result, index) => ({
         ...result,
         key: index + 1,

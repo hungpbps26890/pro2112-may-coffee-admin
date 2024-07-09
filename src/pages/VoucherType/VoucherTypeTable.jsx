@@ -5,6 +5,7 @@ import {
   fetchAllVoucherTypes,
   deleteVoucherTypeById,
 } from "../../services/VoucherTypeService";
+import { Space, Table } from "antd";
 
 const VoucherTypeTable = () => {
   const [voucherTypes, setVoucherTypes] = useState([]);
@@ -13,8 +14,11 @@ const VoucherTypeTable = () => {
     const res = await fetchAllVoucherTypes();
 
     if (res && res.result) {
-      setVoucherTypes(res.result);
-      console.log(res.result);
+      const data = res.result.map((element, index) => ({
+        ...element,
+        key: index + 1,
+      }));
+      setVoucherTypes(data);
     }
   };
 
@@ -33,6 +37,46 @@ const VoucherTypeTable = () => {
       toast.error("Error deleting a voucher type!");
     }
   };
+
+  const columns = [
+    {
+      title: "#",
+      dataIndex: "key",
+      rowScope: "row",
+    },
+    {
+      title: "Name",
+      dataIndex: "name",
+      key: "name",
+      defaultSortOrder: "descend",
+      sorter: (a, b) => a.name.length - b.name.length,
+      sortDirections: ["descend"],
+    },
+    {
+      title: "Action",
+      dataIndex: "id",
+      key: "action",
+      render: (_, voucherType) => (
+        <Space size="middle">
+          <button
+            className="templatemo-edit-btn"
+            onClick={() =>
+              navigator(`/admin/edit-voucher-type/${voucherType.id}`)
+            }
+          >
+            Edit
+          </button>
+          <button
+            className="templatemo-delete-btn"
+            onClick={() => deleteVoucherType(voucherType.id)}
+          >
+            Delete
+          </button>
+        </Space>
+      ),
+    },
+  ];
+
   return (
     <div className="templatemo-content-widget white-bg">
       <div
@@ -52,49 +96,7 @@ const VoucherTypeTable = () => {
         </button>
       </div>
       <div className="panel panel-default table-responsive">
-        <table className="table table-striped table-bordered templatemo-user-table">
-          <thead>
-            <tr>
-              <td>
-                <a href="" className="white-text templatemo-sort-by">
-                  # <span className="caret"></span>
-                </a>
-              </td>
-              <td>
-                <a href="" className="white-text templatemo-sort-by">
-                  Voucher Type Name <span className="caret"></span>
-                </a>
-              </td>
-              <td>Actions</td>
-            </tr>
-          </thead>
-          <tbody>
-            {voucherTypes &&
-              voucherTypes.length > 0 &&
-              voucherTypes.map((voucherType, index) => (
-                <tr key={`voucherType-${index}`}>
-                  <th>{index + 1}</th>
-                  <td>{voucherType.name}</td>
-                  <td>
-                    <button
-                      className="templatemo-edit-btn"
-                      onClick={() =>
-                        navigator(`/admin/edit-voucher-type/${voucherType.id}`)
-                      }
-                    >
-                      Edit
-                    </button>
-                    <button
-                      className="templatemo-delete-btn"
-                      onClick={() => deleteVoucherType(voucherType.id)}
-                    >
-                      Delete
-                    </button>
-                  </td>
-                </tr>
-              ))}
-          </tbody>
-        </table>
+        <Table columns={columns} dataSource={voucherTypes} />
       </div>
     </div>
   );

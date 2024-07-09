@@ -57,8 +57,17 @@ const VoucherForm = () => {
     const res = await fetchAllVoucherTypes();
 
     if (res && res.result) {
-      setVoucherTypes(res.result);
-      setInitialValues({ ...initialValues, voucherTypeId: res.result[0].id });
+      const VoucherTypesData = res.result;
+      setVoucherTypes(
+        VoucherTypesData.map((voucherType) => ({
+          key: voucherType.name,
+          value: voucherType.id,
+        }))
+      );
+      setInitialValues({
+        ...initialValues,
+        voucherTypeId: VoucherTypesData[0].id,
+      });
     }
   };
 
@@ -130,25 +139,12 @@ const VoucherForm = () => {
           >
             {(formik) => (
               <Form className="templatemo-login-form">
-                <div className={`form-group`}>
-                  <label htmlFor="voucherTypeId" className="control-label">
-                    Voucher Type
-                  </label>
-                  <Field
-                    as="select"
-                    id="voucherTypeId"
-                    name="voucherTypeId"
-                    className="form-control"
-                  >
-                    {voucherTypes.map((voucherType) => {
-                      return (
-                        <option key={voucherType.id} value={voucherType.id}>
-                          {voucherType.name}
-                        </option>
-                      );
-                    })}
-                  </Field>
-                </div>
+                <FormikControl
+                  control="select"
+                  label="Voucher Type"
+                  name="voucherTypeId"
+                  options={voucherTypes}
+                />
                 <FormikControl
                   control="input"
                   label="Discount Code"
@@ -156,21 +152,21 @@ const VoucherForm = () => {
                 />
                 <FormikControl control="input" label="Amount" name="amount" />
                 <div className="row form-group">
-                  <div className="col-md-2">
+                  <div className="col-md-3">
                     <FormikControl
                       control="date"
                       label="Begin Date"
                       name="beginDate"
                     />
                   </div>
-                  <div className="col-md-2">
+                  <div className="col-md-3">
                     <FormikControl
                       control="date"
                       label="End Date"
                       name="endDate"
                     />
                   </div>
-                  <div className="col-md-8">
+                  <div className="col-md-6">
                     <label htmlFor="image" className="control-label">
                       Image
                     </label>

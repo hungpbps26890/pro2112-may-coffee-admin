@@ -7,6 +7,7 @@ import {
 } from "../../services/VoucherService";
 import { fetchGetVoucherTypeById } from "../../services/VoucherTypeService";
 import { format } from "date-fns";
+import { Space, Table } from "antd";
 
 const VoucherTable = () => {
   const [vouchers, setVouchers] = useState([]);
@@ -18,8 +19,11 @@ const VoucherTable = () => {
   const getAllVouchers = async () => {
     const res = await fetchAllVouchers();
     if (res && res.result) {
-      setVouchers(res.result);
-      console.log(res.result);
+      const data = res.result.map((element, index) => ({
+        ...element,
+        key: index + 1,
+      }));
+      setVouchers(data);
     }
   };
 
@@ -42,6 +46,99 @@ const VoucherTable = () => {
       toast.error("Error deleting a voucher!");
     }
   };
+
+  const columns = [
+    {
+      title: "#",
+      dataIndex: "key",
+      rowScope: "row",
+    },
+    {
+      title: "Voucher Type",
+      dataIndex: "voucherType",
+      key: "voucherType",
+      defaultSortOrder: "descend",
+      sorter: (a, b) => a.voucherType.name.length - b.voucherType.name.length,
+      sortDirections: ["descend"],
+      render: (voucherType) => (
+        <td className="ant-table-cell ant-table-column-sort">
+          {voucherType.name}
+        </td>
+      ),
+    },
+    {
+      title: "Discount Code",
+      dataIndex: "discountCode",
+      key: "discountCode",
+      defaultSortOrder: "descend",
+      sorter: (a, b) => a.discountCode.length - b.discountCode.length,
+      sortDirections: ["descend"],
+    },
+    {
+      title: "Amount",
+      dataIndex: "amount",
+      key: "amount",
+      defaultSortOrder: "descend",
+      sorter: (a, b) => a.amount - b.amount,
+      sortDirections: ["descend"],
+    },
+    {
+      title: "Begin Date",
+      dataIndex: "beginDate",
+      key: "beginDate",
+      defaultSortOrder: "descend",
+      sorter: (a, b) => a.beginDate.length - b.beginDate.length,
+      sortDirections: ["descend"],
+    },
+    {
+      title: "End Date",
+      dataIndex: "endDate",
+      key: "endDate",
+      defaultSortOrder: "descend",
+      sorter: (a, b) => a.endDate.length - b.endDate.length,
+      sortDirections: ["descend"],
+    },
+    {
+      title: "Image",
+      dataIndex: "image",
+      key: "image",
+      defaultSortOrder: "descend",
+      sortDirections: ["descend"],
+      render: (image) => (
+        <>
+          <td className="ant-table-cell ant-table-column-sort">
+            <img
+              src={image}
+              alt="Voucher image preview"
+              style={{ width: 150, margin: 5 }}
+            />
+          </td>
+        </>
+      ),
+    },
+    {
+      title: "Action",
+      dataIndex: "id",
+      key: "action",
+      render: (_, voucher) => (
+        <Space size="middle">
+          <button
+            className="templatemo-edit-btn"
+            onClick={() => navigator(`/admin/edit-voucher/${voucher.id}`)}
+          >
+            Edit
+          </button>
+          <button
+            className="templatemo-delete-btn"
+            onClick={() => deleteVoucher(voucher.id)}
+          >
+            Delete
+          </button>
+        </Space>
+      ),
+    },
+  ];
+
   return (
     <div className="templatemo-content-widget white-bg">
       <div
@@ -61,85 +158,7 @@ const VoucherTable = () => {
         </button>
       </div>
       <div className="panel panel-default table-responsive">
-        <table className="table table-striped table-bordered templatemo-user-table">
-          <thead>
-            <tr>
-              <td>
-                <a href="" className="white-text templatemo-sort-by">
-                  # <span className="caret"></span>
-                </a>
-              </td>
-              <td>
-                <a href="" className="white-text templatemo-sort-by">
-                  Voucher Type <span className="caret"></span>
-                </a>
-              </td>
-              <td>
-                <a href="" className="white-text templatemo-sort-by">
-                  Discount Code <span className="caret"></span>
-                </a>
-              </td>
-              <td>
-                <a href="" className="white-text templatemo-sort-by">
-                  Amount <span className="caret"></span>
-                </a>
-              </td>
-              <td>
-                <a href="" className="white-text templatemo-sort-by">
-                  Begin Date <span className="caret"></span>
-                </a>
-              </td>
-              <td>
-                <a href="" className="white-text templatemo-sort-by">
-                  End Date <span className="caret"></span>
-                </a>
-              </td>
-              <td>
-                <a href="" className="white-text templatemo-sort-by">
-                  Image <span className="caret"></span>
-                </a>
-              </td>
-              <td>Actions</td>
-            </tr>
-          </thead>
-          <tbody>
-            {vouchers &&
-              vouchers.length > 0 &&
-              vouchers.map((voucher, index) => (
-                <tr key={`voucher-${index}`}>
-                  <td>{index + 1}</td>
-                  <td>{voucher.voucherType.name}</td>
-                  <td>{voucher.discountCode}</td>
-                  <td>{voucher.amount}</td>
-                  <td>{format(new Date(voucher.beginDate), "Pp")}</td>
-                  <td>{format(new Date(voucher.endDate), "Pp")}</td>
-                  <td>
-                    <img
-                      src={voucher.image}
-                      alt="Voucher image preview"
-                      style={{ width: 150, margin: 5 }}
-                    />
-                  </td>
-                  <td>
-                    <button
-                      className="templatemo-edit-btn"
-                      onClick={() =>
-                        navigator(`/admin/edit-voucher/${voucher.id}`)
-                      }
-                    >
-                      Edit
-                    </button>
-                    <button
-                      className="templatemo-delete-btn"
-                      onClick={() => deleteVoucher(voucher.id)}
-                    >
-                      Delete
-                    </button>
-                  </td>
-                </tr>
-              ))}
-          </tbody>
-        </table>
+        <Table columns={columns} dataSource={vouchers} />
       </div>
     </div>
   );

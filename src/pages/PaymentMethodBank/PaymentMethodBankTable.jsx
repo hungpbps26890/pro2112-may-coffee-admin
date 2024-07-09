@@ -5,16 +5,20 @@ import { fetchAllPaymentMethodBanks } from "../../services/PaymentMethodBankServ
 import { format } from "date-fns";
 import { NumericFormat } from "react-number-format";
 
-const CategoryTable = () => {
+import { Space, Table } from "antd";
+
+const PaymentMethodBankTable = () => {
   const [paymentMethodBanks, setPaymentMethodBanks] = useState([]);
 
   const getAllPaymentMethodBanks = async () => {
     const res = await fetchAllPaymentMethodBanks();
 
     if (res && res.result) {
-      console.log(res.result);
-      const paymentMethodBank = res.result;
-      setPaymentMethodBanks(res.result);
+      const data = res.result.map((element, index) => ({
+        ...element,
+        key: index + 1,
+      }));
+      setPaymentMethodBanks(data);
     }
   };
 
@@ -33,6 +37,86 @@ const CategoryTable = () => {
       toast.error("Error deleting a payment method bank!");
     }
   };
+
+  const columns = [
+    {
+      title: "#",
+      dataIndex: "key",
+      rowScope: "row",
+    },
+    {
+      title: "owner",
+      dataIndex: "owner",
+      key: "owner",
+      defaultSortOrder: "descend",
+      sorter: (a, b) => a.owner.length - b.owner.length,
+      sortDirections: ["descend"],
+    },
+    {
+      title: "Total Price",
+      dataIndex: "totalPrice",
+      key: "totalPrice",
+      defaultSortOrder: "descend",
+      sorter: (a, b) => a.totalPrice - b.totalPrice,
+      sortDirections: ["descend"],
+    },
+    {
+      title: "Credit Card",
+      dataIndex: "creditCard",
+      key: "creditCard",
+      defaultSortOrder: "descend",
+      sorter: (a, b) => a.creditCard.length - b.creditCard.length,
+      sortDirections: ["descend"],
+    },
+    {
+      title: "Date",
+      dataIndex: "date",
+      key: "date",
+      defaultSortOrder: "descend",
+      sorter: (a, b) => a.date.length - b.date.length,
+      sortDirections: ["descend"],
+    },
+    {
+      title: "Payment Method",
+      dataIndex: "paymentMethod",
+      key: "paymentMethod",
+      defaultSortOrder: "descend",
+      render: (paymentMethod) => (
+        <td className="ant-table-cell ant-table-column-sort">
+          {paymentMethod.name}
+        </td>
+      ),
+    },
+    {
+      title: "Bank",
+      dataIndex: "bank",
+      key: "bank",
+      defaultSortOrder: "descend",
+      render: (bank) => (
+        <td className="ant-table-cell ant-table-column-sort">{bank.name}</td>
+      ),
+    },
+    {
+      title: "Action",
+      dataIndex: "id",
+      key: "action",
+      render: (_, paymentMethodBank) => (
+        <Space size="middle">
+          <button
+            className="templatemo-edit-btn"
+            onClick={() =>
+              navigator(
+                `/admin/edit-payment-method-bank/${paymentMethodBank.id}`
+              )
+            }
+          >
+            Detail
+          </button>
+        </Space>
+      ),
+    },
+  ];
+
   return (
     <div className="templatemo-content-widget white-bg">
       <div
@@ -52,87 +136,10 @@ const CategoryTable = () => {
         </button>
       </div>
       <div className="panel panel-default table-responsive">
-        <table className="table table-striped table-bordered templatemo-user-table">
-          <thead>
-            <tr>
-              <td>
-                <a href="" className="white-text templatemo-sort-by">
-                  # <span className="caret"></span>
-                </a>
-              </td>
-              <td>
-                <a href="" className="white-text templatemo-sort-by">
-                  Owner <span className="caret"></span>
-                </a>
-              </td>
-              <td>
-                <a href="" className="white-text templatemo-sort-by">
-                  Credit Card <span className="caret"></span>
-                </a>
-              </td>
-              <td>
-                <a href="" className="white-text templatemo-sort-by">
-                  Total Price <span className="caret"></span>
-                </a>
-              </td>
-              <td>
-                <a href="" className="white-text templatemo-sort-by">
-                  Date <span className="caret"></span>
-                </a>
-              </td>
-              <td>
-                <a href="" className="white-text templatemo-sort-by">
-                  Payment Method <span className="caret"></span>
-                </a>
-              </td>
-              <td>
-                <a href="" className="white-text templatemo-sort-by">
-                  Bank <span className="caret"></span>
-                </a>
-              </td>
-              <td>Actions</td>
-            </tr>
-          </thead>
-          <tbody>
-            {paymentMethodBanks &&
-              paymentMethodBanks.length > 0 &&
-              paymentMethodBanks.map((paymentMethodBank, index) => (
-                <tr key={`category-${index}`}>
-                  <th>{index + 1}</th>
-                  <td>{paymentMethodBank.owner}</td>
-                  <td>{paymentMethodBank.creditCard}</td>
-                  <td>
-                    <NumericFormat
-                      displayType="text"
-                      value={paymentMethodBank.totalPrice}
-                      allowLeadingZeros
-                      thousandSeparator
-                    />
-                  </td>
-                  <td>
-                    {format(new Date(paymentMethodBank.date), "dd/MM/yyyy")}
-                  </td>
-                  <td>{paymentMethodBank.paymentMethod.name}</td>
-                  <td>{paymentMethodBank.bank.name}</td>
-                  <td>
-                    <button
-                      className="templatemo-edit-btn"
-                      onClick={() =>
-                        navigator(
-                          `/admin/edit-payment-method-bank/${paymentMethodBank.id}`
-                        )
-                      }
-                    >
-                      Detail
-                    </button>
-                  </td>
-                </tr>
-              ))}
-          </tbody>
-        </table>
+        <Table columns={columns} dataSource={paymentMethodBanks} />
       </div>
     </div>
   );
 };
 
-export default CategoryTable;
+export default PaymentMethodBankTable;

@@ -5,6 +5,7 @@ import {
   fetchAllPaymentMethods,
   deletePaymentMethodById,
 } from "../../services/PaymentMethodService";
+import { Space, Table } from "antd";
 
 const PaymentMethodTable = () => {
   const [paymentMethods, setPaymentMethods] = useState([]);
@@ -13,8 +14,12 @@ const PaymentMethodTable = () => {
     const res = await fetchAllPaymentMethods();
 
     if (res && res.result) {
-      setPaymentMethods(res.result);
-      console.log(res.result);
+      const data = res.result.map((element, index) => ({
+        ...element,
+        key: index + 1,
+      }));
+      console.log(data);
+      setPaymentMethods(data);
     }
   };
 
@@ -33,6 +38,46 @@ const PaymentMethodTable = () => {
       toast.error("Error deleting a payment method!");
     }
   };
+
+  const columns = [
+    {
+      title: "#",
+      dataIndex: "key",
+      rowScope: "row",
+    },
+    {
+      title: "Name",
+      dataIndex: "name",
+      key: "name",
+      defaultSortOrder: "descend",
+      sorter: (a, b) => a.name.length - b.name.length,
+      sortDirections: ["descend"],
+    },
+    {
+      title: "Action",
+      dataIndex: "id",
+      key: "action",
+      render: (_, paymentMethod) => (
+        <Space size="middle">
+          <button
+            className="templatemo-edit-btn"
+            onClick={() =>
+              navigator(`/admin/edit-payment-methods/${paymentMethod.id}`)
+            }
+          >
+            Edit
+          </button>
+          <button
+            className="templatemo-delete-btn"
+            onClick={() => deletePaymentMethod(paymentMethod.id)}
+          >
+            Delete
+          </button>
+        </Space>
+      ),
+    },
+  ];
+
   return (
     <div className="templatemo-content-widget white-bg">
       <div
@@ -52,49 +97,7 @@ const PaymentMethodTable = () => {
         </button>
       </div>
       <div className="panel panel-default table-responsive">
-        <table className="table table-striped table-bordered templatemo-user-table">
-          <thead>
-            <tr>
-              <td>
-                <a href="" className="white-text templatemo-sort-by">
-                  # <span className="caret"></span>
-                </a>
-              </td>
-              <td>
-                <a href="" className="white-text templatemo-sort-by">
-                  Payment Method Name <span className="caret"></span>
-                </a>
-              </td>
-              <td>Actions</td>
-            </tr>
-          </thead>
-          <tbody>
-            {paymentMethods &&
-              paymentMethods.length > 0 &&
-              paymentMethods.map((paymentMethod, index) => (
-                <tr key={`category-${index}`}>
-                  <th>{index + 1}</th>
-                  <td>{paymentMethod.name}</td>
-                  <td>
-                    <button
-                      className="templatemo-edit-btn"
-                      onClick={() =>
-                        navigator(`/admin/edit-payment-methods/${paymentMethod.id}`)
-                      }
-                    >
-                      Edit
-                    </button>
-                    <button
-                      className="templatemo-delete-btn"
-                      onClick={() => deletePaymentMethod(paymentMethod.id)}
-                    >
-                      Delete
-                    </button>
-                  </td>
-                </tr>
-              ))}
-          </tbody>
-        </table>
+        <Table columns={columns} dataSource={paymentMethods} />
       </div>
     </div>
   );
