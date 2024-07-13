@@ -19,7 +19,8 @@ const VoucherTable = () => {
   const getAllVouchers = async () => {
     const res = await fetchAllVouchers();
     if (res && res.result) {
-      const data = res.result.map((element, index) => ({
+      const data = res.result;
+      const reverseData = data.reverse().map((element, index) => ({
         ...element,
         key: index + 1,
       }));
@@ -57,7 +58,6 @@ const VoucherTable = () => {
       title: "Voucher Type",
       dataIndex: "voucherType",
       key: "voucherType",
-      defaultSortOrder: "descend",
       sorter: (a, b) => a.voucherType.name.length - b.voucherType.name.length,
       sortDirections: ["descend"],
       render: (voucherType) => (
@@ -70,7 +70,6 @@ const VoucherTable = () => {
       title: "Discount Code",
       dataIndex: "discountCode",
       key: "discountCode",
-      defaultSortOrder: "descend",
       sorter: (a, b) => a.discountCode.length - b.discountCode.length,
       sortDirections: ["descend"],
     },
@@ -78,7 +77,6 @@ const VoucherTable = () => {
       title: "Amount",
       dataIndex: "amount",
       key: "amount",
-      defaultSortOrder: "descend",
       sorter: (a, b) => a.amount - b.amount,
       sortDirections: ["descend"],
     },
@@ -86,7 +84,6 @@ const VoucherTable = () => {
       title: "Begin Date",
       dataIndex: "beginDate",
       key: "beginDate",
-      defaultSortOrder: "descend",
       sorter: (a, b) => a.beginDate.length - b.beginDate.length,
       sortDirections: ["descend"],
     },
@@ -94,7 +91,6 @@ const VoucherTable = () => {
       title: "End Date",
       dataIndex: "endDate",
       key: "endDate",
-      defaultSortOrder: "descend",
       sorter: (a, b) => a.endDate.length - b.endDate.length,
       sortDirections: ["descend"],
     },
@@ -102,7 +98,6 @@ const VoucherTable = () => {
       title: "Image",
       dataIndex: "image",
       key: "image",
-      defaultSortOrder: "descend",
       sortDirections: ["descend"],
       render: (image) => (
         <>
