@@ -32,6 +32,8 @@ import UserForm from "./pages/User/UserForm";
 import FormikContainer from "./components/FormikContainer/FormikContainer";
 import DrinkTableAnt from "./pages/Drink/DrinkTableAnt";
 import OrderTableAnt from "./pages/Order/OrderTableAnt";
+import ChartJS from "./pages/ChartJSTutorial/ChartJS";
+import UserTableAnt from "./pages/User/UserTableAnt";
 
 const App = () => {
   return (
@@ -157,6 +159,12 @@ const App = () => {
                 path="/admin/table/orders"
                 element={<OrderTableAnt />}
               ></Route>
+
+              <Route
+                path="/admin/table/users"
+                element={<UserTableAnt />}
+              ></Route>
+              <Route path="/admin/chart/chartjs" element={<ChartJS />}></Route>
             </Routes>
 
             {/* Footer */}

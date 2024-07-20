@@ -1,15 +1,11 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { toast } from "react-toastify";
 import { NumericFormat } from "react-number-format";
-import { format as dateFormat, endOfDay } from "date-fns";
-import { EditOutlined, DeleteOutlined, EyeOutlined } from "@ant-design/icons";
+import { format as dateFormat } from "date-fns";
+import { EditOutlined, EyeOutlined } from "@ant-design/icons";
 import { DatePicker, Table } from "antd";
 
-import {
-  fetchGetAllOrders,
-  fetchGetOrdersWithCriteria,
-} from "../../services/OrderService";
+import { fetchGetOrdersWithCriteria } from "../../services/OrderService";
 import { fetchGetAllOrderStatuses } from "../../services/OrderStatusService";
 
 const { RangePicker } = DatePicker;
@@ -39,7 +35,6 @@ const OrderTableAnt = () => {
     }
 
     if (res && res.result) {
-      console.log("test" + res.result.items);
       const data = res.result.items.map((result, index) => ({
         ...result,
         key: index + 1,
