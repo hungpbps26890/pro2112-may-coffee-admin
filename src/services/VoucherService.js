@@ -2,6 +2,8 @@ import axios from "./customized-axios";
 
 export const fetchAllVouchers = () => axios.get("/api/vouchers");
 
+export const fetchAllValidVouchers = () => axios.get("/api/vouchers/valid");
+
 export const fetchGetVoucherById = (id) => axios.get(`/api/vouchers/${id}`);
 
 export const postCreateVoucher = (data) => axios.post("/api/vouchers", data);
