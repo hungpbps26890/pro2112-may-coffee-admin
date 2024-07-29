@@ -5,9 +5,11 @@ import { format as dateFormat } from "date-fns";
 import { fetchGetUserById, putUpdateUser } from "../../services/UserService";
 import FormikControl from "../../components/FormControl/FormikControl";
 import { toast } from "react-toastify";
+import { fetchGetAllRoles } from "../../services/RoleService";
 
 const UserForm = () => {
   const [formValues, setFormValues] = useState();
+  const [roles, setRoles] = useState([]);
 
   const { id } = useParams();
 
@@ -21,8 +23,8 @@ const UserForm = () => {
       setFormValues({
         ...user,
         isActive: user.isActive.toString(),
-        roles: user.roles[0].name,
-        dob: dateFormat( new Date(user.dob), "dd/MM/yyyy"),
+        roles: user.roles.map((role) => role.name),
+        dob: dateFormat(user.dob, "dd/MM/yyyy"),
       });
     }
   };
@@ -30,6 +32,19 @@ const UserForm = () => {
   useEffect(() => {
     if (id) getUserById(id);
   }, [id]);
+
+  const getAllRoles = async () => {
+    const res = await fetchGetAllRoles();
+
+    if (res && res.result) {
+      const roles = res.result;
+      setRoles(roles.map((role) => ({ key: role.name, value: role.name })));
+    }
+  };
+
+  useEffect(() => {
+    getAllRoles();
+  }, []);
 
   const radioOptions = [
     { key: "Active", value: "true" },
@@ -44,18 +59,23 @@ const UserForm = () => {
     isActive: "true",
     authType: "",
     dob: "",
-    roles: "",
+    roles: [],
   };
 
   const onSubmit = (values) => {
     console.log("Form values: ", values);
-    const data = { isActive: values.isActive };
+    const data = {
+      isActive: values.isActive,
+      roles: values.roles,
+    };
+
+    console.log("Data: ", data);
 
     if (id) {
       handleUpdateUser(id, data);
     }
 
-    navigator("/admin/users");
+    navigator("/admin/table/users");
   };
 
   const handleUpdateUser = async (id, data) => {
@@ -137,10 +157,10 @@ const UserForm = () => {
                 />
 
                 <FormikControl
-                  control="input"
+                  control="checkbox"
                   label="Role"
                   name="roles"
-                  readOnly
+                  options={roles}
                 />
 
                 <FormikControl

@@ -92,7 +92,10 @@ const UserTable = () => {
                   <td>{user.isActive ? "Active" : "Inactive"}</td>
                   <td>
                     {user.roles.map((role) => (
-                      <span className="me-2" key={`role-${role.name}`}>
+                      <span
+                        style={{ marginRight: 5 }}
+                        key={`role-${role.name}`}
+                      >
                         {role.name}
                       </span>
                     ))}

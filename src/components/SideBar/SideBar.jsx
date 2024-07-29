@@ -27,9 +27,12 @@ const SideBar = () => {
       <nav className="templatemo-left-nav">
         <ul>
           <li>
-            <a href="index.html">
+            <NavLink
+              to={"/admin/chart/chartjs"}
+              style={{ textDecoration: "none" }}
+            >
               <i className="fa fa-home fa-fw"></i>Dashboard
-            </a>
+            </NavLink>
           </li>
           <li>
             <NavLink
@@ -63,7 +66,10 @@ const SideBar = () => {
             </NavLink>
           </li>
           <li>
-            <NavLink to={"/admin/users"} style={{ textDecoration: "none" }}>
+            <NavLink
+              to={"/admin/table/users"}
+              style={{ textDecoration: "none" }}
+            >
               <i className="fa fa-users fa-fw"></i>Manage Users
             </NavLink>
           </li>
