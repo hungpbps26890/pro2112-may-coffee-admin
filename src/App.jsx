@@ -34,6 +34,7 @@ import DrinkTableAnt from "./pages/Drink/DrinkTableAnt";
 import OrderTableAnt from "./pages/Order/OrderTableAnt";
 import ChartJS from "./pages/ChartJSTutorial/ChartJS";
 import UserTableAnt from "./pages/User/UserTableAnt";
+import ReviewTable from "./pages/Review/ReviewTable";
 
 const App = () => {
   return (
@@ -165,6 +166,7 @@ const App = () => {
                 element={<UserTableAnt />}
               ></Route>
               <Route path="/admin/chart/chartjs" element={<ChartJS />}></Route>
+              <Route path="/admin/reviews" element={<ReviewTable />}></Route>
             </Routes>
 
             {/* Footer */}

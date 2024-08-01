@@ -9,7 +9,6 @@ import { Space, Table } from "antd";
 
 const PaymentMethodTable = () => {
   const [paymentMethods, setPaymentMethods] = useState([]);
-
   const getAllPaymentMethods = async () => {
     const res = await fetchAllPaymentMethods();
 

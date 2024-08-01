@@ -108,6 +108,11 @@ const SideBar = () => {
             </NavLink>
           </li>
           <li>
+            <NavLink to={"/admin/reviews"} style={{ textDecoration: "none" }}>
+              <i className="fa fa-sliders fa-fw"></i>Manage Review
+            </NavLink>
+          </li>
+          <li>
             <a href="login.html">
               <i className="fa fa-eject fa-fw"></i>Sign Out
             </a>
