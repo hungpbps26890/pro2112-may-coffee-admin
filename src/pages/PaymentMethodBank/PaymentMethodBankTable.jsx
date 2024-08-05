@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { fetchAllPaymentMethodBanks } from "../../services/PaymentMethodBankService";
-import { format } from "date-fns";
+import { format as dateFormat } from "date-fns";
 import { NumericFormat } from "react-number-format";
 
 import { Space, Table } from "antd";
@@ -56,6 +56,14 @@ const PaymentMethodBankTable = () => {
       defaultSortOrder: "descend",
       sorter: (a, b) => a.amount - b.amount,
       sortDirections: ["descend"],
+      render: (amount) => (
+        <NumericFormat
+          value={amount}
+          displayType="text"
+          thousandSeparator=","
+          suffix=" đ"
+        />
+      ),
     },
     {
       title: "Date",
@@ -65,7 +73,7 @@ const PaymentMethodBankTable = () => {
       sorter: (a, b) => a.payDate - b.payDate,
       sortDirections: ["descend"],
       render: (payDate) => (
-        <td className="ant-table-cell ant-table-column-sort">{payDate}</td>
+        <>{dateFormat(new Date(payDate), "dd/MM/yyyy, HH:mm:ss")}</>
       ),
     },
     {

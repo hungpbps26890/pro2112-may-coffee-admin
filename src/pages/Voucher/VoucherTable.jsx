@@ -6,8 +6,9 @@ import {
   deleteVoucherById,
 } from "../../services/VoucherService";
 import { fetchGetVoucherTypeById } from "../../services/VoucherTypeService";
-import { format } from "date-fns";
 import { Space, Table } from "antd";
+import { NumericFormat } from "react-number-format";
+import { format as dateFormat } from "date-fns";
 
 const VoucherTable = () => {
   const [vouchers, setVouchers] = useState([]);
@@ -79,20 +80,38 @@ const VoucherTable = () => {
       key: "amount",
       sorter: (a, b) => a.amount - b.amount,
       sortDirections: ["descend"],
+      render: (amount) => (
+        <>
+          {amount > 1 ? (
+            <NumericFormat
+              value={amount}
+              displayType="text"
+              thousandSeparator=","
+              suffix=" đ"
+            />
+          ) : (
+            amount + "%"
+          )}
+        </>
+      ),
     },
     {
       title: "Begin Date",
       dataIndex: "beginDate",
       key: "beginDate",
-      sorter: (a, b) => a.beginDate.length - b.beginDate.length,
       sortDirections: ["descend"],
+      sorter: (a, b) => a.beginDate.length - b.beginDate.length,
+      render: (beginDate) => (
+        <>{dateFormat(beginDate, "dd/MM/yyyy, HH:mm:ss")}</>
+      ),
     },
     {
       title: "End Date",
       dataIndex: "endDate",
       key: "endDate",
-      sorter: (a, b) => a.endDate.length - b.endDate.length,
       sortDirections: ["descend"],
+      sorter: (a, b) => a.endDate.length - b.endDate.length,
+      render: (endDate) => <>{dateFormat(endDate, "dd/MM/yyyy, HH:mm:ss")}</>,
     },
     {
       title: "Image",
