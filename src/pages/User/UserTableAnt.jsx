@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from "react";
-import { fetchGetAllUsers } from "../../services/UserService";
+import { fetchGetAllUsers, putLockUser  } from "../../services/UserService";
 import { useNavigate } from "react-router-dom";
 import { Button, Input, Space, Table } from "antd";
 import { EditOutlined, LockOutlined, SearchOutlined } from "@ant-design/icons";
+import { toast } from "react-toastify";
 
 const UserTableAnt = () => {
   const [users, setUsers] = useState([]);
@@ -19,6 +20,20 @@ const UserTableAnt = () => {
       }));
       console.log("Data: ", data);
       setUsers(data);
+    }
+  };
+
+  const handLockUser = async (id) => {
+    const res = await putLockUser(id);
+    if (res && res.result) {
+      console.log(res.result);
+      toast.success(res.message);
+      setInterval(() => {
+            window.location.reload();
+          }, 3500);
+      
+    } else {
+      toast.error("Error lock user!");
     }
   };
 
@@ -189,6 +204,9 @@ const UserTableAnt = () => {
             onClick={() => navigator(`/admin/edit-user/${record.id}`)}
             style={{ marginRight: 10 }}
           />
+          <LockOutlined
+                onClick={() => navigator(handLockUser(`${record.id}`))}
+              />
         </>
       ),
     },
