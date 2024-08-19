@@ -15,7 +15,7 @@ const ReviewTable = () => {
         ...element,
         key: index + 1,
       }));
-      setReviews(data);
+      setReviews(reverseData);
     }
   };
 
