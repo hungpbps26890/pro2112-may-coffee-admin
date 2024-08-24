@@ -42,18 +42,23 @@ const OrderDetails = () => {
     if (order) {
       const user = order.user;
 
+      let address = null;
+      if (order.address != null) {
+        address = {
+          streetNumber: order.address.streetNumber,
+          ward: order.address.ward,
+          district: order.address.district,
+          province: order.address.province,
+        };
+      }
+
       setInitialValues({
         firstName: user.firstName,
         lastName: user.lastName,
         email: user.email,
         phoneNumber: user.phoneNumber,
         paymentMethod: order.paymentMethod.name,
-        address: {
-          streetNumber: order.address.streetNumber,
-          ward: order.address.ward,
-          district: order.address.district,
-          province: order.address.province,
-        },
+        address,
       });
     }
   }, [order]);

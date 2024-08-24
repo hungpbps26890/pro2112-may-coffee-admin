@@ -1,5 +1,5 @@
-import React from "react";
-import { Routes, Route } from "react-router-dom";
+import React, { useContext, useEffect } from "react";
+import { Routes, Route, useLocation } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
@@ -35,17 +35,27 @@ import OrderTableAnt from "./pages/Order/OrderTableAnt";
 import ChartJS from "./pages/ChartJSTutorial/ChartJS";
 import UserTableAnt from "./pages/User/UserTableAnt";
 import ReviewTable from "./pages/Review/ReviewTable";
+import Login from "./pages/Login/Login";
+import { StoreContext } from "./context/StoreContext";
+import OrderByStaff from "./pages/OrderByStaff/OrderByStaff";
 
 const App = () => {
+  const { pathname } = useLocation();
+  const { token, setToken } = useContext(StoreContext);
+
+  useEffect(() => {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }, [pathname]);
+
   return (
     <>
-      <div className="templatemo-flex-row">
-        <SideBar />
+      <div className="templatemo-flex-row" style={{ minHeight: 800 }}>
+        {token && <SideBar />}
 
         {/* Main content */}
         <div className="templatemo-content col-1 light-gray-bg">
           {/* Top Navigation Bar */}
-          <NavBar />
+          {token && <NavBar />}
 
           {/* Content */}
           <div className="templatemo-content-container">
@@ -165,8 +175,15 @@ const App = () => {
                 path="/admin/table/users"
                 element={<UserTableAnt />}
               ></Route>
-              <Route path="/admin/chart/chartjs" element={<ChartJS />}></Route>
               <Route path="/admin/reviews" element={<ReviewTable />}></Route>
+
+              <Route path="/admin/dashboard" element={<ChartJS />}></Route>
+              <Route path="/admin/login" element={<Login />}></Route>
+              <Route path="/" element={<Login />}></Route>
+              <Route
+                path="/admin/staff/order"
+                element={<OrderByStaff />}
+              ></Route>
             </Routes>
 
             {/* Footer */}
