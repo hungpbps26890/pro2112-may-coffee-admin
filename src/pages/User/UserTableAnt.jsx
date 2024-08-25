@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { fetchGetAllUsers, putLockUser  } from "../../services/UserService";
+import { fetchGetAllUsers, putLockUser } from "../../services/UserService";
 import { useNavigate } from "react-router-dom";
 import { Button, Input, Space, Table } from "antd";
 import { EditOutlined, LockOutlined, SearchOutlined } from "@ant-design/icons";
@@ -29,9 +29,8 @@ const UserTableAnt = () => {
       console.log(res.result);
       toast.success(res.message);
       setInterval(() => {
-            window.location.reload();
-          }, 3500);
-      
+        window.location.reload();
+      }, 3500);
     } else {
       toast.error("Error lock user!");
     }
@@ -40,6 +39,53 @@ const UserTableAnt = () => {
   useEffect(() => {
     getAllUsers();
   }, []);
+
+  const handleFilterDropdown = (
+    setSelectedKeys,
+    selectedKeys,
+    confirm,
+    clearFilters
+  ) => {
+    return (
+      <div style={{ padding: 8 }}>
+        <Input
+          style={{ marginBottom: 8 }}
+          autoFocus
+          placeholder="Type text here"
+          value={selectedKeys[0]}
+          onChange={(e) => {
+            setSelectedKeys(e.target.value ? [e.target.value] : []);
+            confirm({ closeDropdown: false });
+          }}
+          onPressEnter={() => {
+            confirm();
+          }}
+          onBlur={() => {
+            confirm();
+          }}
+        ></Input>
+        <Space>
+          <Button
+            onClick={() => {
+              confirm();
+            }}
+            type="primary"
+            icon={<SearchOutlined />}
+          >
+            Search
+          </Button>
+          <Button
+            onClick={() => {
+              clearFilters();
+              confirm();
+            }}
+          >
+            Reset
+          </Button>
+        </Space>
+      </div>
+    );
+  };
 
   const columns = [
     {
@@ -54,47 +100,13 @@ const UserTableAnt = () => {
         selectedKeys,
         confirm,
         clearFilters,
-      }) => {
-        return (
-          <div style={{ padding: 8 }}>
-            <Input
-              style={{ marginBottom: 8 }}
-              autoFocus
-              placeholder="Type text here"
-              value={selectedKeys[0]}
-              onChange={(e) => {
-                setSelectedKeys(e.target.value ? [e.target.value] : []);
-                confirm({ closeDropdown: false });
-              }}
-              onPressEnter={() => {
-                confirm();
-              }}
-              onBlur={() => {
-                confirm();
-              }}
-            ></Input>
-            <Space>
-              <Button
-                onClick={() => {
-                  confirm();
-                }}
-                type="primary"
-                icon={<SearchOutlined />}
-              >
-                Search
-              </Button>
-              <Button
-                onClick={() => {
-                  clearFilters();
-                  confirm();
-                }}
-              >
-                Reset
-              </Button>
-            </Space>
-          </div>
-        );
-      },
+      }) =>
+        handleFilterDropdown(
+          setSelectedKeys,
+          selectedKeys,
+          confirm,
+          clearFilters
+        ),
       filterIcon: () => {
         return <SearchOutlined />;
       },
@@ -205,8 +217,8 @@ const UserTableAnt = () => {
             style={{ marginRight: 10 }}
           />
           <LockOutlined
-                onClick={() => navigator(handLockUser(`${record.id}`))}
-              />
+            onClick={() => navigator(handLockUser(`${record.id}`))}
+          />
         </>
       ),
     },

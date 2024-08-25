@@ -1,18 +1,25 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
-import { EditOutlined, DeleteOutlined } from "@ant-design/icons";
+import {
+  EditOutlined,
+  DeleteOutlined,
+  SearchOutlined,
+} from "@ant-design/icons";
 
 import {
   deleteDrinkById,
   fetchGetAllDrinks,
 } from "../../services/DrinkService";
-import { Table } from "antd";
+import { Button, Flex, Image, Input, Space, Table } from "antd";
+import { NumericFormat } from "react-number-format";
+import { fetchAllCategories } from "../../services/CategoryService";
 
 const DrinkTableAnt = () => {
   const [drinks, setDrinks] = useState([]);
   const [pageNumber, setPageNumber] = useState(1);
   const [pageSize, setPageSize] = useState(10);
+  const [categories, setCategories] = useState([]);
 
   const getAllDrinks = async () => {
     const res = await fetchGetAllDrinks();
@@ -29,9 +36,71 @@ const DrinkTableAnt = () => {
 
   useEffect(() => {
     getAllDrinks();
+    getAllCategories();
   }, []);
 
+  const getAllCategories = async () => {
+    const res = await fetchAllCategories();
+
+    if (res && res.result) {
+      const categories = res.result;
+      setCategories(
+        categories.map((category) => ({
+          text: category.name,
+          value: category.id,
+        }))
+      );
+    }
+  };
+
   const navigator = useNavigate();
+
+  const handleFilterDropdown = (
+    setSelectedKeys,
+    selectedKeys,
+    confirm,
+    clearFilters
+  ) => {
+    return (
+      <div style={{ padding: 8 }}>
+        <Input
+          style={{ marginBottom: 8 }}
+          autoFocus
+          placeholder="Type text here"
+          value={selectedKeys[0]}
+          onChange={(e) => {
+            setSelectedKeys(e.target.value ? [e.target.value] : []);
+            confirm({ closeDropdown: false });
+          }}
+          onPressEnter={() => {
+            confirm();
+          }}
+          onBlur={() => {
+            confirm();
+          }}
+        ></Input>
+        <Space>
+          <Button
+            onClick={() => {
+              confirm();
+            }}
+            type="primary"
+            icon={<SearchOutlined />}
+          >
+            Search
+          </Button>
+          <Button
+            onClick={() => {
+              clearFilters();
+              confirm();
+            }}
+          >
+            Reset
+          </Button>
+        </Space>
+      </div>
+    );
+  };
 
   const deleteDrink = async (id) => {
     const res = await deleteDrinkById(id);
@@ -46,7 +115,6 @@ const DrinkTableAnt = () => {
 
   const columns = [
     {
-      key: "1",
       title: "#",
       dataIndex: "key",
       sorter: (drink1, drink2) => {
@@ -54,23 +122,51 @@ const DrinkTableAnt = () => {
       },
     },
     {
-      key: "2",
       title: "Drink Name",
       dataIndex: "name",
-      sorter: (drink1, drink2) => {
-        return drink1.name > drink2.name;
+      filterDropdown: ({
+        setSelectedKeys,
+        selectedKeys,
+        confirm,
+        clearFilters,
+      }) =>
+        handleFilterDropdown(
+          setSelectedKeys,
+          selectedKeys,
+          confirm,
+          clearFilters
+        ),
+      filterIcon: () => {
+        return <SearchOutlined />;
+      },
+      onFilter: (value, record) => {
+        return record.name.toLowerCase().includes(value.toLowerCase());
       },
     },
     {
-      key: "3",
       title: "Price",
       dataIndex: "price",
-      sorter: (drink1, drink2) => {
-        return drink1.price > drink2.price;
+      render: (price) => (
+        <NumericFormat
+          value={price}
+          displayType="text"
+          thousandSeparator=","
+          suffix=" đ"
+        />
+      ),
+      sorter: (firstRecord, secondRecord) =>
+        firstRecord.price - secondRecord.price,
+    },
+    {
+      title: "Category",
+      dataIndex: "category",
+      render: (category) => <>{category.name}</>,
+      filters: categories,
+      onFilter: (value, record) => {
+        return record.category.id === value;
       },
     },
     {
-      key: "4",
       title: "Active",
       dataIndex: "isActive",
       render: (isActive) => <p>{isActive ? "Active" : "Inactive"}</p>,
@@ -83,19 +179,40 @@ const DrinkTableAnt = () => {
       },
     },
     {
-      key: "5",
+      title: "Image",
+      dataIndex: "images",
+      render: (images) => {
+        return (
+          <div
+            style={{
+              display: "flex",
+              flexWrap: "wrap",
+              alignContent: "space-between",
+            }}
+          >
+            {images.length > 0 &&
+              images.map((image, index) => (
+                <Image
+                  key={index}
+                  src={image}
+                  alt="Drink image preview"
+                  style={{ width: 50, margin: 5 }}
+                />
+              ))}
+          </div>
+        );
+      },
+    },
+
+    {
       title: "Actions",
       render: (record) => {
         return (
-          <>
+          <Flex justify="center">
             <EditOutlined
               onClick={() => navigator(`/admin/edit-drink/${record.id}`)}
             />
-            <DeleteOutlined
-              style={{ color: "red", marginLeft: 10 }}
-              onClick={() => deleteDrink(record.id)}
-            />
-          </>
+          </Flex>
         );
       },
     },

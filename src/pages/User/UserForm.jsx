@@ -20,11 +20,13 @@ const UserForm = () => {
 
     if (res && res.result) {
       const user = res.result;
+      let dob = user.dob;
+      if (dob) dob = dateFormat(dob, "dd/MM/yyyy");
       setFormValues({
         ...user,
         isActive: user.isActive.toString(),
         roles: user.roles.map((role) => role.name),
-        dob: dateFormat(user.dob, "dd/MM/yyyy"),
+        dob: dob,
       });
     }
   };

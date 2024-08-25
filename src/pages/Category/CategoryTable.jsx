@@ -29,6 +29,7 @@ const CategoryTable = () => {
 
     if (res && res.message) {
       toast.success(res.message);
+      getAllCategories();
     } else {
       toast.error("Error deleting a category!");
     }

@@ -134,7 +134,7 @@ const DrinkForm = () => {
       handleSaveDrink(data);
     }
 
-    navigator("/admin/drinks");
+    navigator("/admin/table/drinks");
 
     onSubmitProps.resetForm();
   };

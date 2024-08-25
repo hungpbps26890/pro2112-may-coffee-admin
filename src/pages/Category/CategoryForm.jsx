@@ -79,7 +79,7 @@ const CategoryForm = () => {
     <div className="templatemo-content-widget no-padding">
       <div className="panel panel-default">
         <div className="panel-heading">
-          <h2 className="text-uppercase">Topping Form</h2>
+          <h2 className="text-uppercase">Category Form</h2>
         </div>
         <div className="panel-body">
           <Formik
@@ -93,7 +93,7 @@ const CategoryForm = () => {
               <Form className="templatemo-login-form">
                 <FormikControl
                   control="input"
-                  label="Topping name"
+                  label="Category name"
                   name="name"
                 />
 

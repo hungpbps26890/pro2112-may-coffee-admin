@@ -63,7 +63,10 @@ const SideBar = () => {
             </NavLink>
           </li>
           <li>
-            <NavLink to={"/admin/drinks"} style={{ textDecoration: "none" }}>
+            <NavLink
+              to={"/admin/table/drinks"}
+              style={{ textDecoration: "none" }}
+            >
               <i className="fa fa-coffee fa-fw"></i>Manage Drink
             </NavLink>
           </li>

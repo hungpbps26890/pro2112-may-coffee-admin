@@ -9,5 +9,4 @@ export const postCreateCategory = (data) => axios.post("/api/categories", data);
 export const putUpdateCategory = (id, data) =>
   axios.put(`/api/categories/${id}`, data);
 
-export const deleteCategoryById = (id) =>
-  axios.delete(`/api/categories/delete/${id}`);
+export const deleteCategoryById = (id) => axios.delete(`/api/categories/${id}`);
