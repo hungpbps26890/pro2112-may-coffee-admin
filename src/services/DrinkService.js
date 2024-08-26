@@ -20,6 +20,10 @@ export const deleteDrinkById = (id) => {
   return axios.delete(`/api/drinks/${id}`);
 };
 
+export const putUpdateDrinkStatus = (id) => {
+  return axios.put(`/api/drinks/status/${id}`);
+};
+
 export const fetchGetDrinksByCategoryId = (id) => {
   return axios.get(`api/drinks/category/${id}`);
 };

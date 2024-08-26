@@ -1,15 +1,12 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
-import {
-  EditOutlined,
-  DeleteOutlined,
-  SearchOutlined,
-} from "@ant-design/icons";
+import { EditOutlined, SearchOutlined, LockOutlined } from "@ant-design/icons";
 
 import {
   deleteDrinkById,
   fetchGetAllDrinks,
+  putUpdateDrinkStatus,
 } from "../../services/DrinkService";
 import { Button, Flex, Image, Input, Space, Table } from "antd";
 import { NumericFormat } from "react-number-format";
@@ -50,6 +47,17 @@ const DrinkTableAnt = () => {
           value: category.id,
         }))
       );
+    }
+  };
+
+  const handleUpdateDrinkStatus = async (id) => {
+    const res = await putUpdateDrinkStatus(id);
+
+    if (res && res.result) {
+      toast.success(res.message);
+      getAllDrinks();
+    } else {
+      toast.error("Error updating drink status");
     }
   };
 
@@ -210,7 +218,12 @@ const DrinkTableAnt = () => {
         return (
           <Flex justify="center">
             <EditOutlined
+              style={{ marginRight: 10 }}
               onClick={() => navigator(`/admin/edit-drink/${record.id}`)}
+            />
+            <LockOutlined
+              style={{ color: "red" }}
+              onClick={() => handleUpdateDrinkStatus(record.id)}
             />
           </Flex>
         );
