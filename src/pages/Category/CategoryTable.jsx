@@ -5,16 +5,29 @@ import {
   fetchAllCategories,
   deleteCategoryById,
 } from "../../services/CategoryService";
+import { Button, Input, Space, Table } from "antd";
+import {
+  EditOutlined,
+  SearchOutlined,
+  DeleteOutlined,
+} from "@ant-design/icons";
 
 const CategoryTable = () => {
   const [categories, setCategories] = useState([]);
+  const [pageNumber, setPageNumber] = useState(1);
+  const [pageSize, setPageSize] = useState(5);
 
   const getAllCategories = async () => {
     const res = await fetchAllCategories();
 
     if (res && res.result) {
-      setCategories(res.result);
-      console.log(res.result);
+      const data = res.result.map((result, index) => ({
+        ...result,
+        key: index + 1,
+      }));
+
+      setCategories(data);
+      console.log("Categories: ", data);
     }
   };
 
@@ -34,6 +47,99 @@ const CategoryTable = () => {
       toast.error("Error deleting a category!");
     }
   };
+
+  const handleFilterDropdown = (
+    setSelectedKeys,
+    selectedKeys,
+    confirm,
+    clearFilters
+  ) => {
+    return (
+      <div style={{ padding: 8 }}>
+        <Input
+          style={{ marginBottom: 8 }}
+          autoFocus
+          placeholder="Type text here"
+          value={selectedKeys[0]}
+          onChange={(e) => {
+            setSelectedKeys(e.target.value ? [e.target.value] : []);
+            confirm({ closeDropdown: false });
+          }}
+          onPressEnter={() => {
+            confirm();
+          }}
+          onBlur={() => {
+            confirm();
+          }}
+        ></Input>
+        <Space>
+          <Button
+            onClick={() => {
+              confirm();
+            }}
+            type="primary"
+            icon={<SearchOutlined />}
+          >
+            Search
+          </Button>
+          <Button
+            onClick={() => {
+              clearFilters();
+              confirm();
+            }}
+          >
+            Reset
+          </Button>
+        </Space>
+      </div>
+    );
+  };
+
+  const columns = [
+    {
+      title: "#",
+      dataIndex: "key",
+    },
+    {
+      title: "Category name",
+      dataIndex: "name",
+      filterDropdown: ({
+        setSelectedKeys,
+        selectedKeys,
+        confirm,
+        clearFilters,
+      }) =>
+        handleFilterDropdown(
+          setSelectedKeys,
+          selectedKeys,
+          confirm,
+          clearFilters
+        ),
+      filterIcon: () => {
+        return <SearchOutlined />;
+      },
+      onFilter: (value, record) => {
+        return record.name.toLowerCase().includes(value.toLowerCase());
+      },
+    },
+    {
+      title: "Actions",
+      width: 100,
+      render: (record) => (
+        <>
+          <EditOutlined
+            onClick={() => navigator(`/admin/edit-category/${record.id}`)}
+            style={{ marginRight: 10 }}
+          />
+          <DeleteOutlined
+            style={{ color: "red" }}
+            onClick={() => deleteCategory(record.id)}
+          />
+        </>
+      ),
+    },
+  ];
+
   return (
     <div className="templatemo-content-widget white-bg">
       <div
@@ -53,49 +159,17 @@ const CategoryTable = () => {
         </button>
       </div>
       <div className="panel panel-default table-responsive">
-        <table className="table table-striped table-bordered templatemo-user-table">
-          <thead>
-            <tr>
-              <td>
-                <a href="" className="white-text templatemo-sort-by">
-                  # <span className="caret"></span>
-                </a>
-              </td>
-              <td>
-                <a href="" className="white-text templatemo-sort-by">
-                  Category Name <span className="caret"></span>
-                </a>
-              </td>
-              <td>Actions</td>
-            </tr>
-          </thead>
-          <tbody>
-            {categories &&
-              categories.length > 0 &&
-              categories.map((category, index) => (
-                <tr key={`category-${index}`}>
-                  <th>{index + 1}</th>
-                  <td>{category.name}</td>
-                  <td>
-                    <button
-                      className="templatemo-edit-btn"
-                      onClick={() =>
-                        navigator(`/admin/edit-category/${category.id}`)
-                      }
-                    >
-                      Edit
-                    </button>
-                    <button
-                      className="templatemo-delete-btn"
-                      onClick={() => deleteCategory(category.id)}
-                    >
-                      Delete
-                    </button>
-                  </td>
-                </tr>
-              ))}
-          </tbody>
-        </table>
+        <Table
+          columns={columns}
+          dataSource={categories}
+          pagination={{
+            current: pageNumber,
+            pageSize: pageSize,
+            onChange: (pageNumber, pageSize) => {
+              setPageNumber(pageNumber), setPageSize(pageSize);
+            },
+          }}
+        ></Table>
       </div>
     </div>
   );

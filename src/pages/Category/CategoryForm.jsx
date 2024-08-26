@@ -44,8 +44,6 @@ const CategoryForm = () => {
       handleSaveCategory(values);
     }
 
-    navigator("/admin/categories");
-
     onSubmitProps.resetForm();
   };
 
@@ -59,6 +57,7 @@ const CategoryForm = () => {
     if (res && res.result) {
       console.log(res.result);
       toast.success("Add a new category successfull!");
+      navigator("/admin/categories");
     } else {
       toast.error("Error adding a new category!");
     }
@@ -70,6 +69,7 @@ const CategoryForm = () => {
     if (res && res.result) {
       console.log(res.result);
       toast.success("Update category successfull!");
+      navigator("/admin/categories");
     } else {
       toast.error("Error updating a category!");
     }

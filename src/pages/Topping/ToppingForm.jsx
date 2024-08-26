@@ -47,8 +47,6 @@ const ToppingForm = () => {
       handleSaveTopping(values);
     }
 
-    navigator("/admin/toppings");
-
     onSubmitProps.resetForm();
   };
 
@@ -72,6 +70,7 @@ const ToppingForm = () => {
     if (res && res.result) {
       console.log(res.result);
       toast.success("Add a new topping successfull!");
+      navigator("/admin/toppings");
     } else {
       toast.error("Error adding a new topping!");
     }
@@ -83,6 +82,7 @@ const ToppingForm = () => {
     if (res && res.result) {
       console.log(res.result);
       toast.success("Update topping successfull!");
+      navigator("/admin/toppings");
     } else {
       toast.error("Error updating a topping!");
     }

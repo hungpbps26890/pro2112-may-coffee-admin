@@ -76,8 +76,6 @@ const UserForm = () => {
     if (id) {
       handleUpdateUser(id, data);
     }
-
-    navigator("/admin/table/users");
   };
 
   const handleUpdateUser = async (id, data) => {
@@ -86,6 +84,7 @@ const UserForm = () => {
     if (res && res.result) {
       console.log(res.result);
       toast.success(res.message);
+      navigator("/admin/table/users");
     } else {
       toast.error("Error updating user!");
     }

@@ -18,7 +18,7 @@ import { fetchAllCategories } from "../../services/CategoryService";
 const DrinkTableAnt = () => {
   const [drinks, setDrinks] = useState([]);
   const [pageNumber, setPageNumber] = useState(1);
-  const [pageSize, setPageSize] = useState(10);
+  const [pageSize, setPageSize] = useState(5);
   const [categories, setCategories] = useState([]);
 
   const getAllDrinks = async () => {

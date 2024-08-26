@@ -134,8 +134,6 @@ const DrinkForm = () => {
       handleSaveDrink(data);
     }
 
-    navigator("/admin/table/drinks");
-
     onSubmitProps.resetForm();
   };
 
@@ -145,6 +143,7 @@ const DrinkForm = () => {
     if (res && res.result) {
       console.log(res.result);
       toast.success("Add a new drink successfully!");
+      navigator("/admin/table/drinks");
     } else {
       toast.error("Error adding a new drink!");
     }
@@ -156,6 +155,7 @@ const DrinkForm = () => {
     if (res && res.result) {
       console.log(res.result);
       toast.success("Update drink successfully!");
+      navigator("/admin/table/drinks");
     } else {
       toast.error("Error updating a drink!");
     }

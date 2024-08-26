@@ -9,5 +9,4 @@ export const postCreateTopping = (data) => axios.post("/api/toppings", data);
 export const putUpdateTopping = (id, data) =>
   axios.put(`/api/toppings/${id}`, data);
 
-export const deleteToppingById = (id) =>
-  axios.delete(`/api/toppings/delete/${id}`);
+export const deleteToppingById = (id) => axios.delete(`/api/toppings/${id}`);

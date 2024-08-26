@@ -7,6 +7,8 @@ import { toast } from "react-toastify";
 
 const UserTableAnt = () => {
   const [users, setUsers] = useState([]);
+  const [pageNumber, setPageNumber] = useState(1);
+  const [pageSize, setPageSize] = useState(5);
 
   const navigator = useNavigate();
 
@@ -23,14 +25,13 @@ const UserTableAnt = () => {
     }
   };
 
-  const handLockUser = async (id) => {
+  const handleLockUser = async (id) => {
     const res = await putLockUser(id);
+
     if (res && res.result) {
       console.log(res.result);
       toast.success(res.message);
-      setInterval(() => {
-        window.location.reload();
-      }, 3500);
+      getAllUsers();
     } else {
       toast.error("Error lock user!");
     }
@@ -134,47 +135,13 @@ const UserTableAnt = () => {
         selectedKeys,
         confirm,
         clearFilters,
-      }) => {
-        return (
-          <div style={{ padding: 8 }}>
-            <Input
-              style={{ marginBottom: 8 }}
-              autoFocus
-              placeholder="Type text here"
-              value={selectedKeys[0]}
-              onChange={(e) => {
-                setSelectedKeys(e.target.value ? [e.target.value] : []);
-                confirm({ closeDropdown: false });
-              }}
-              onPressEnter={() => {
-                confirm();
-              }}
-              onBlur={() => {
-                confirm();
-              }}
-            ></Input>
-            <Space>
-              <Button
-                onClick={() => {
-                  confirm();
-                }}
-                type="primary"
-                icon={<SearchOutlined />}
-              >
-                Search
-              </Button>
-              <Button
-                onClick={() => {
-                  clearFilters();
-                  confirm();
-                }}
-              >
-                Reset
-              </Button>
-            </Space>
-          </div>
-        );
-      },
+      }) =>
+        handleFilterDropdown(
+          setSelectedKeys,
+          selectedKeys,
+          confirm,
+          clearFilters
+        ),
       filterIcon: () => {
         return <SearchOutlined />;
       },
@@ -217,7 +184,8 @@ const UserTableAnt = () => {
             style={{ marginRight: 10 }}
           />
           <LockOutlined
-            onClick={() => navigator(handLockUser(`${record.id}`))}
+            style={{ color: "red" }}
+            onClick={() => handleLockUser(record.id)}
           />
         </>
       ),
@@ -243,7 +211,18 @@ const UserTableAnt = () => {
         </button>
       </div>
 
-      <Table columns={columns} dataSource={users} scroll={{ x: true }}></Table>
+      <Table
+        columns={columns}
+        dataSource={users}
+        scroll={{ x: true }}
+        pagination={{
+          current: pageNumber,
+          pageSize: pageSize,
+          onChange: (pageNumber, pageSize) => {
+            setPageNumber(pageNumber), setPageSize(pageSize);
+          },
+        }}
+      ></Table>
     </div>
   );
 };

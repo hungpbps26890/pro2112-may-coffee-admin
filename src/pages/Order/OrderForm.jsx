@@ -89,6 +89,7 @@ const OrderForm = () => {
     if (res && res.result) {
       console.log(res.result);
       toast.success("Update order successfully!");
+      navigator("/admin/table/orders");
     } else {
       toast.error("Error updating order!");
     }
@@ -106,8 +107,6 @@ const OrderForm = () => {
     console.log("Data: ", data);
 
     handleUpdateOrderStatus(data);
-
-    navigator("/admin/table/orders");
   };
 
   return (

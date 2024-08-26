@@ -45,8 +45,6 @@ const SizeForm = () => {
       handleSaveSize(values);
     }
 
-    navigator("/admin/sizes");
-
     onSubmitProps.resetForm();
   };
 
@@ -61,6 +59,7 @@ const SizeForm = () => {
     if (res && res.result) {
       console.log(res.result);
       toast.success("Add a new size successfull!");
+      navigator("/admin/sizes");
     } else {
       toast.error("Error adding a new size!");
     }
@@ -72,6 +71,7 @@ const SizeForm = () => {
     if (res && res.result) {
       console.log(res.result);
       toast.success("Update size successfull!");
+      navigator("/admin/sizes");
     } else {
       toast.error("Error updating a size!");
     }

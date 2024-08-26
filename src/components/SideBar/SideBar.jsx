@@ -72,6 +72,14 @@ const SideBar = () => {
           </li>
           <li>
             <NavLink
+              to={"/admin/table/users"}
+              style={{ textDecoration: "none" }}
+            >
+              <i className="fa fa-users fa-fw"></i>Manage Users
+            </NavLink>
+          </li>
+          <li>
+            <NavLink
               to={"/admin/categories"}
               style={{ textDecoration: "none" }}
             >
@@ -89,14 +97,6 @@ const SideBar = () => {
             </NavLink>
           </li>
           <li>
-            <NavLink
-              to={"/admin/table/users"}
-              style={{ textDecoration: "none" }}
-            >
-              <i className="fa fa-users fa-fw"></i>Manage Users
-            </NavLink>
-          </li>
-          <li>
             <NavLink to={"/admin/banks"} style={{ textDecoration: "none" }}>
               <i className="fa fa-sliders fa-fw"></i>Manage Bank
             </NavLink>
@@ -106,7 +106,7 @@ const SideBar = () => {
               to={"/admin/payment-methods"}
               style={{ textDecoration: "none" }}
             >
-              <i className="fa fa-sliders fa-fw"></i>Manage Payment Method
+              <i className="fa fa-sliders fa-fw"></i>Payment Method
             </NavLink>
           </li>
           <li>
@@ -114,7 +114,7 @@ const SideBar = () => {
               to={"/admin/payment-method-banks"}
               style={{ textDecoration: "none" }}
             >
-              <i className="fa fa-sliders fa-fw"></i>Manage Payment Method Bank
+              <i className="fa fa-sliders fa-fw"></i>Payment Method Bank
             </NavLink>
           </li>
           <li>
@@ -122,7 +122,7 @@ const SideBar = () => {
               to={"/admin/voucher-types"}
               style={{ textDecoration: "none" }}
             >
-              <i className="fa fa-sliders fa-fw"></i>Manage Voucher Type
+              <i className="fa fa-sliders fa-fw"></i>Voucher Type
             </NavLink>
           </li>
           <li>
