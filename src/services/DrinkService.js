@@ -5,7 +5,7 @@ export const postCreateDrink = (data) => {
 };
 
 export const fetchGetAllDrinks = () => {
-  return axios.get("/api/drinks");
+  return axios.get("/api/drinks/admin");
 };
 
 export const fetchGetDrinkById = (id) => {
